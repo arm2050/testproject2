@@ -6,7 +6,9 @@ class Myclass(QtWidgets.QMainWindow) :
         super().__init__()
         uic.loadUi('test1.ui', self)
         self.show()
-
+        self.sign_up.clicked.connect(self.sign_up1)
+    def sign_up1(self):
+        uic.loadUi('sign_up.ui', self)
 
 
 
