@@ -50,7 +50,7 @@
      <string>enter your password :</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="password">
+   <widget class="QLineEdit" name="password_login">
     <property name="geometry">
      <rect>
       <x>240</x>

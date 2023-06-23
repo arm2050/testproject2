@@ -20,6 +20,7 @@ class Myclass(QtWidgets.QMainWindow) :
         self.sign_up2.clicked.connect(self.sign_up22)
         self.back.clicked.connect(self.sign_up33)
     def sign_up22(self):
+        global s
         c.execute("""
             CREATE TABLE IF NOT EXISTS users (username text , password text);
         """)
@@ -47,19 +48,29 @@ class Myclass(QtWidgets.QMainWindow) :
         self.show()
         self.login2.clicked.connect(self.login22)
     def login22(self):
-        # self.username_name = self.username_login.text()
-        # self.password_name = self.password_login.text()
-        uic.loadUi('test1.ui', self)
-        self.show()
-        self.sign_up.clicked.connect(self.sign_up1)
-        self.login.clicked.connect(self.login11)
+        s = e1.execute("""
+            SELECT * FROM users;
+        """)
+        print(s.fetchall())
+        print((self.username_login.text() , self.password_login.text()))
+        print((self.username_login.text() , self.password_login.text()) in s.fetchall())
+        if tuple((self.username_login.text() , self.password_login.text())) in list(s.fetchall()) :
+            print("1")
+            self.username_name = self.username_login.text()
+            self.password_name = self.password_login.text()
+            uic.loadUi('test1.ui', self)
+            self.show()
+            self.sign_up.clicked.connect(self.sign_up1)
+            self.login.clicked.connect(self.login11)
+        # else:
+        #     print("you havent sign up until now")
+
+print(("a" , "b") in [("a" , "b")])
 
 
 
 
 
-
-3
 
 
 
