@@ -15,6 +15,7 @@ class Myclass(QtWidgets.QMainWindow) :
     def sign_up1(self):
         uic.loadUi('sign_up.ui', self)
         self.sign_up2.clicked.connect(self.sign_up22)
+        self.back.clicked.connect(self.sign_up33)
     def sign_up22(self):
         c.execute("""
             CREATE TABLE IF NOT EXISTS users (username text , password text);
@@ -33,7 +34,8 @@ class Myclass(QtWidgets.QMainWindow) :
             print(s.fetchall())
         # else :
         #     print("another username with this password and username created")
-
+    def sign_up33(self):
+        uic.loadUi('test1.ui', self)
 
 
 
