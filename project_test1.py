@@ -36,7 +36,8 @@ class Myclass(QtWidgets.QMainWindow) :
         #     print("another username with this password and username created")
     def sign_up33(self):
         uic.loadUi('test1.ui', self)
-
+        self.show()
+        self.sign_up.clicked.connect(self.sign_up1)
 
 
 
