@@ -12,6 +12,7 @@ class Myclass(QtWidgets.QMainWindow) :
         uic.loadUi('test1.ui', self)
         self.show()
         self.sign_up.clicked.connect(self.sign_up1)
+        self.login.clicked.connect(self.login11)
     def sign_up1(self):
         uic.loadUi('sign_up.ui', self)
         self.sign_up2.clicked.connect(self.sign_up22)
@@ -38,7 +39,12 @@ class Myclass(QtWidgets.QMainWindow) :
         uic.loadUi('test1.ui', self)
         self.show()
         self.sign_up.clicked.connect(self.sign_up1)
-
+    def login11(self):
+        uic.loadUi('login.ui', self)
+        self.show()
+        self.login.clicked.connect(self.login22)
+    def login22(self):
+        pass
 
 
 
