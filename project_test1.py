@@ -8,6 +8,8 @@ e1 = sqlite3.connect('i.db')
 c = e1.cursor()
 class Myclass(QtWidgets.QMainWindow) :
     def __init__(self):
+        self.username_name = None
+        self.password_name = None
         super().__init__()
         uic.loadUi('test1.ui', self)
         self.show()
@@ -39,20 +41,25 @@ class Myclass(QtWidgets.QMainWindow) :
         uic.loadUi('test1.ui', self)
         self.show()
         self.sign_up.clicked.connect(self.sign_up1)
+        self.login.clicked.connect(self.login11)
     def login11(self):
         uic.loadUi('login.ui', self)
         self.show()
-        self.login.clicked.connect(self.login22)
+        self.login2.clicked.connect(self.login22)
     def login22(self):
-        pass
+        # self.username_name = self.username_login.text()
+        # self.password_name = self.password_login.text()
+        uic.loadUi('test1.ui', self)
+        self.show()
+        self.sign_up.clicked.connect(self.sign_up1)
+        self.login.clicked.connect(self.login11)
 
 
 
 
 
 
-
-
+3
 
 
 

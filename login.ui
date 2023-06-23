@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLineEdit" name="username">
+   <widget class="QLineEdit" name="username_login">
     <property name="geometry">
      <rect>
       <x>240</x>
@@ -60,7 +60,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="login2">
     <property name="geometry">
      <rect>
       <x>220</x>
