@@ -87,35 +87,15 @@ class MenuPage(QtWidgets.QWidget):
         self.show()
     def a(self):
         driver = webdriver.Chrome()
-        driver.get("https://www.digikala.com/search/category-mobile-phone/xiaomi/")
-        # driver.find_element(by=By.CSS_SELECTOR , value='#search').send_keys("gg")
-        # driver.implicitly_wait(45)
-
-        # products = driver.find_elements(by=By.CSS_SELECTOR , value='h3.ellipsis-2.text-body2-strong.color-700.styles_VerticalProductCard__productTitle__6zjjN')
-        # print(products)
-        # for i in products :
-        #     print(i.text)
-        # driver.find_element(by=By.XPATH , value = '//*[@id="__next"]/div[1]/div[2]/div[4]/div[1]/header/div[2]/div[1]/div/div/div/svg/use').click()
+        driver.get("https://www.digikala.com/search/category-power-bank/")
         products = []
-        # names = driver.find_elements(by=By.CSS_SELECTOR,value='h3.ellipsis-2.text-body2-strong color-700.styles_VerticalProductCard__productTitle__6zjjN')
-        # names = driver.find_elements(by=By.XPATH,value='')
-        # prices = driver.find_elements(by=By.CSS_SELECTOR,value='div.d-flex.ai-center.jc-end.gap-1.color-700.color-400.text-h5.grow-1')
-        # prices = driver.find_elements(by=By.XPATH,value='div')
-        # ProductListPagesWrapper > section > div.product-list_ProductList__pagesContainer__zAhrX.product-list_ProductList__pagesContainer--withoutSidebar__aty9j > div:nth-child(1) > a > div > article > div.d-flex.grow-1.pos-relative.flex-column > div.grow-1.d-flex.flex-column.ai-stretch.jc-start > div:nth-child(2) > h3
-        # names = driver.find_element(by=By.CSS_SELECTOR, value='')
-        driver.implicitly_wait(35)
-        prices = driver.find_elements(by=By.CSS_SELECTOR , value='div.d-flex.ai-center.jc-end.gap-1.color-700.color-400.text-h5.grow-1')
-        for i in range(0 , 3) :
-            # name = driver.find_element(by=By.XPATH , value='/html/body/div[1]/div[1]/div[2]/div[4]/div[2]/div[3]/section/div[2]/div[' + str(i) + ']/a/div/article/div[2]/div[2]/div[2]/h3').text
-            # price = driver.find_element(by=By.XPATH , value='/html/body/div[1]/div[1]/div[2]/div[4]/div[2]/div[3]/section/div[2]/div[' + str(i) + ']/a/div/article/div[2]/div[2]/div[4]/div[1]/div/span').text
-            #
-            # a1 = A(0 , prices[i] , None)
-            # products.append(a1)
-            pass
-        for i in range(0 , 10) :
-            print(prices[i].text)
-        return None
-
+        for i in range(1,10) :
+            namee = driver.find_element(By.XPATH , value='/html/body/div[1]/div[1]/div[2]/div[4]/div[2]/div/div[2]/section/div[2]/div[' + str(i) + ']/a/div/article/div[2]/div[2]/div[2]/h3').text
+            pricee = driver.find_element(By.XPATH , value='/html/body/div[1]/div[1]/div[2]/div[4]/div[2]/div/div[2]/section/div[2]/div[' + str(i) + ']/a/div/article/div[2]/div[2]/div[4]/div[1]/div[2]').text
+            a1 = A(namee , pricee , None)
+            products.append(a1)
+        for i in products :
+            print(i)
 class A:
         def __init__(self , name , price , img):
             self.name = name
@@ -160,6 +140,21 @@ if __name__ == '__main__':
 
 
 
+
+
+
+
+
+# /html/body/div[1]/div[1]/div[2]/div[4]/div[2]/div/div[2]/section/div[2]/div[1]/a/div/article/div[2]/div[2]/div[2]/h3
+# /html/body/div[1]/div[1]/div[2]/div[4]/div[2]/div/div[2]/section/div[2]/div[1]/a/div/article/div[2]/div[2]/div[4]/div[1]/div[2]
+#
+#
+# /html/body/div[1]/div[1]/div[2]/div[4]/div[2]/div/div[2]/section/div[2]/div[2]/a/div/article/div[2]/div[2]/div[2]/h3
+# /html/body/div[1]/div[1]/div[2]/div[4]/div[2]/div/div[2]/section/div[2]/div[2]/a/div/article/div[2]/div[2]/div[4]/div[1]/div
+#
+#
+# /html/body/div[1]/div[1]/div[2]/div[4]/div[2]/div/div[2]/section/div[2]/div[3]/a/div/article/div[2]/div[2]/div[2]/h3
+# /html/body/div[1]/div[1]/div[2]/div[4]/div[2]/div/div[2]/section/div[2]/div[3]/a/div/article/div[2]/div[2]/div[4]/div[1]/div
 
 
 
