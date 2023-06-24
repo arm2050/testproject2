@@ -105,6 +105,7 @@ class MenuPage(QtWidgets.QWidget):
         # names = driver.find_element(by=By.CSS_SELECTOR, value='')
         driver.implicitly_wait(35)
         prices = driver.find_elements(by=By.CSS_SELECTOR , value='div.d-flex.ai-center.jc-end.gap-1.color-700.color-400.text-h5.grow-1')
+        names = driver.find_elements(by=By.CSS_SELECTOR , value='h3.ellipsis-2.text-body2-strong.color-700.styles_VerticalProductCard__productTitle__6zjjN')
         for i in range(0 , 3) :
             # name = driver.find_element(by=By.XPATH , value='/html/body/div[1]/div[1]/div[2]/div[4]/div[2]/div[3]/section/div[2]/div[' + str(i) + ']/a/div/article/div[2]/div[2]/div[2]/h3').text
             # price = driver.find_element(by=By.XPATH , value='/html/body/div[1]/div[1]/div[2]/div[4]/div[2]/div[3]/section/div[2]/div[' + str(i) + ']/a/div/article/div[2]/div[2]/div[4]/div[1]/div/span').text
@@ -113,7 +114,7 @@ class MenuPage(QtWidgets.QWidget):
             # products.append(a1)
             pass
         for i in range(0 , 10) :
-            print(prices[i].text)
+            print(prices[i].text , names[i].text)
         return None
 
 class A:
