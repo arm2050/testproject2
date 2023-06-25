@@ -1,12 +1,14 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget, QGroupBox, QGridLayout
+from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget, QGroupBox, QGridLayout, QLineEdit
 from PyQt5.QtGui import QPixmap, QFont
+
 
 class Product:
     def __init__(self, image_path, name, price):
         self.image_path = image_path
         self.name = name
         self.price = price
+
 
 class ImageViewer(QWidget):
     def __init__(self, product):
@@ -35,22 +37,24 @@ class ImageViewer(QWidget):
         if pixmap.isNull():
             self.image_label.setText("Invalid image file!")
         else:
-            self.image_label.setPixmap(pixmap.scaled(200, 200, aspectRatioMode=1))
+            self.image_label.setPixmap(
+                pixmap.scaled(200, 200, aspectRatioMode=1))
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
     # Create a list of products
     products = [
-        Product("C:/Users\MR Razeghi/Desktop/final project ap/search branch/1.png",
+        Product("C:/Users/MR Razeghi/Desktop/final project ap/search branch/1.png",
                 "Product 1", "$9.99"),
-        Product("C:/Users\MR Razeghi/Desktop/final project ap/search branch/2.png",
+        Product("C:/Users/MR Razeghi/Desktop/final project ap/search branch/2.png",
                 "Product 2", "$19.99"),
-        Product("C:/Users\MR Razeghi/Desktop/final project ap/search branch/3.png",
+        Product("C:/Users/MR Razeghi/Desktop/final project ap/search branch/3.png",
                 "Product 3", "$14.99"),
-        Product("C:/Users\MR Razeghi/Desktop/final project ap/search branch/1.png",
+        Product("C:/Users/MR Razeghi/Desktop/final project ap/search branch/1.png",
                 "Product 1", "$9.99"),
-        Product("C:/Users\MR Razeghi/Desktop/final project ap/search branch/1.png",
+        Product("C:/Users/MR Razeghi/Desktop/final project ap/search branch/1.png",
                 "Product 1", "$9.99"),
         # Add more products here...
     ]
@@ -68,8 +72,13 @@ if __name__ == "__main__":
     layout = QGridLayout()
     central_widget.setLayout(layout)
 
+    # Add a search bar
+    search_bar = QLineEdit()
+    # Add the search bar at row 0, spanning 1 row and 5 columns
+    layout.addWidget(search_bar, 0, 1, 1, 3)
+
     # Create ImageViewer objects for each product
-    row = 0
+    row = 1  # Start from row 1 to leave space for the search bar
     col = 0
     for product in products:
         viewer = ImageViewer(product)
