@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget, QGroupBox, QGridLayout, QLineEdit
 from PyQt5.QtGui import QPixmap, QFont
+from PyQt5 import QtWidgets
 
 
 class Product:
@@ -75,7 +76,10 @@ if __name__ == "__main__":
     # Add a search bar
     search_bar = QLineEdit()
     # Add the search bar at row 0, spanning 1 row and 5 columns
-    layout.addWidget(search_bar, 0, 1, 1, 3)
+    layout.addWidget(search_bar, 0, 1, 1, 2)
+
+    search_btn = QtWidgets.QPushButton('search')
+    layout.addWidget(search_btn, 0, 3, 1, 1)
 
     # Create ImageViewer objects for each product
     row = 1  # Start from row 1 to leave space for the search bar
