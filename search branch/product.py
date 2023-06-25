@@ -2,7 +2,18 @@ import sys
 from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget, QGroupBox, QGridLayout, QLineEdit
 from PyQt5.QtGui import QPixmap, QFont
 from PyQt5 import QtWidgets
-
+from selenium import webdriver
+import sys
+from PyQt5 import QtWidgets, QtGui, QtCore, uic
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromiumService
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.core.utils import ChromeType
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from time import sleep
+import requests
+from bs4 import BeautifulSoup
 
 class Product:
     def __init__(self, image_path, name, price):
@@ -40,6 +51,16 @@ class ImageViewer(QWidget):
         else:
             self.image_label.setPixmap(
                 pixmap.scaled(200, 200, aspectRatioMode=1))
+
+def a() :
+    driver = webdriver.Chrome()
+    driver.get("https://basalam.com/s?q=%D9%85%D9%88%D8%A8%D8%A7%DB%8C%D9%84")
+    for i in range(1 ,10) :
+        e1 = driver.find_element(By.XPATH , value='/html/body/div[1]/div/div/main/div/div[2]/div[1]/div[2]/div/div[2]/section/div[' + str(i) + ']/div[2]/a')
+        print(e1.text)
+
+
+
 
 
 if __name__ == "__main__":
@@ -80,7 +101,7 @@ if __name__ == "__main__":
 
     search_btn = QtWidgets.QPushButton('search')
     layout.addWidget(search_btn, 0, 3, 1, 1)
-
+    search_btn.clicked.connect(a)
     # Create ImageViewer objects for each product
     row = 1  # Start from row 1 to leave space for the search bar
     col = 0
