@@ -56,9 +56,10 @@ products = []
 s = 1
 def a() :
     global s
+    text1 = search_bar.text()
     srcs = []
     driver = webdriver.Chrome()
-    driver.get("https://basalam.com/search/subcategory/men-homewear")
+    driver.get("https://basalam.com/s?q=" + str(text1))
     # driver.execute_script("window.scrollBy(0,6000)", "")
     for i in range(1 , 6) :
         driver.implicitly_wait(5)
