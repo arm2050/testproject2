@@ -14,7 +14,7 @@ from selenium.webdriver.common.by import By
 from time import sleep
 import requests
 from bs4 import BeautifulSoup
-
+import threading
 class Product:
     def __init__(self, image_path, name, price):
         self.image_path = image_path
@@ -67,15 +67,27 @@ def a() :
         image = driver.find_element(By.XPATH , value='/html/body/div[1]/div/div/main/div/div[2]/div[1]/div[2]/div/div[2]/section/div[' + str(i) + ']/div[1]/a/img')
         image_src = image.get_attribute("src")
         srcs.append(image_src)
-    for src in srcs:
+    threads = []
+    def download(url):
         global a
-        response = requests.get(src)
-        print(src)
+        response = requests.get(url)
         open(str(a) + '.png', 'wb').write(response.content)
         a = a + 1
-    # for i in range(1 , 6) :
-    #     a1 = Product(srcs[i - 1] , name , price)
-    #     products.append(a1)
+    for src in srcs:
+        global a
+        t1 = threading.Thread(target=download , args=(src , ))
+        threads.append(t1)
+        t1.start()
+        # response = requests.get(src)
+        # print(src)
+        # open(str(a) + '.jpg', 'wb').write(response.content)
+        # sleep(16)
+        # a = a + 1
+    for thread in threads:
+        thread.join()
+    for i in range(1 , 6) :
+        a1 = Product(srcs[i - 1] , name , price)
+        products.append(a1)
 
 
 
