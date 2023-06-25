@@ -88,35 +88,27 @@ class MenuPage(QtWidgets.QWidget):
     def a(self):
         driver = webdriver.Chrome()
         driver.get("https://www.digikala.com/search/category-mobile-phone/product-list/?brands%5b0%5d=20")
-        # driver.find_element(by=By.CSS_SELECTOR , value='#search').send_keys("gg")
-        # driver.implicitly_wait(45)
-
-        # products = driver.find_elements(by=By.CSS_SELECTOR , value='h3.ellipsis-2.text-body2-strong.color-700.styles_VerticalProductCard__productTitle__6zjjN')
-        # print(products)
-        # for i in products :
-        #     print(i.text)
-        # driver.find_element(by=By.XPATH , value = '//*[@id="__next"]/div[1]/div[2]/div[4]/div[1]/header/div[2]/div[1]/div/div/div/svg/use').click()
         products = []
-        # names = driver.find_elements(by=By.CSS_SELECTOR,value='h3.ellipsis-2.text-body2-strong color-700.styles_VerticalProductCard__productTitle__6zjjN')
-        # names = driver.find_elements(by=By.XPATH,value='')
-        # prices = driver.find_elements(by=By.CSS_SELECTOR,value='div.d-flex.ai-center.jc-end.gap-1.color-700.color-400.text-h5.grow-1')
-        # prices = driver.find_elements(by=By.XPATH,value='div')
-        # ProductListPagesWrapper > section > div.product-list_ProductList__pagesContainer__zAhrX.product-list_ProductList__pagesContainer--withoutSidebar__aty9j > div:nth-child(1) > a > div > article > div.d-flex.grow-1.pos-relative.flex-column > div.grow-1.d-flex.flex-column.ai-stretch.jc-start > div:nth-child(2) > h3
-        # names = driver.find_element(by=By.CSS_SELECTOR, value='')
+        srcs = []
         sleep(6)
         prices = driver.find_elements(by=By.CSS_SELECTOR , value='div.d-flex.ai-center.jc-end.gap-1.color-700.color-400.text-h5.grow-1')
         names = driver.find_elements(by=By.CSS_SELECTOR , value='h3.ellipsis-2.text-body2-strong.color-700.styles_VerticalProductCard__productTitle__6zjjN')
         sleep(6)
-        for i in range(0 , 3) :
-            # name = driver.find_element(by=By.XPATH , value='/html/body/div[1]/div[1]/div[2]/div[4]/div[2]/div[3]/section/div[2]/div[' + str(i) + ']/a/div/article/div[2]/div[2]/div[2]/h3').text
-            # price = driver.find_element(by=By.XPATH , value='/html/body/div[1]/div[1]/div[2]/div[4]/div[2]/div[3]/section/div[2]/div[' + str(i) + ']/a/div/article/div[2]/div[2]/div[4]/div[1]/div/span').text
-            #
-            # a1 = A(0 , prices[i] , None)
-            # products.append(a1)
-            pass
-        for i in range(0 , 10) :
-            print(prices[i].text , names[i].text)
-        return None
+        images = driver.find_elements(by=By.CSS_SELECTOR , value="img.w-100.radius-medium.d-inline-block.lazyloaded")
+        for i in range(0, 6):
+            print(prices[i].text , names[i].text )
+            print(images[i].get_attribute("src"))
+            # pass
+            # driver.implicitly_wait(4)
+            # print(prices[i] , names[i] , images[i].get_attribute("src"))
+            # a = driver.find_element(By.XPATH,'/html/body/div[1]/div[1]/div[3]/div[3]/div[3]/section[1]/div[2]/div[' + str(i) + ']/a/div/article/div[2]/div[1]/div/div/div[1]/div/picture/img')
+            # src = a.get_attribute("src")
+            # srcs.append(src)
+        # a = 1
+        # for src in srcs :
+        #     response = requests.get(src)
+        #     open(str(a) + '.png', 'wb').write(response.content)
+        #     a = a + 1
 
 class A:
         def __init__(self , name , price , img):
