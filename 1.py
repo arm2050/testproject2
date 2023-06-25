@@ -1,5 +1,5 @@
 import sys
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt5 import QtWidgets, QtGui, QtCore , uic
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromiumService
 from webdriver_manager.chrome import ChromeDriverManager
@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 a = 0
 
 
-class MenuPage(QtWidgets.QWidget):
+class MenuPage(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
 
@@ -87,8 +87,11 @@ class MenuPage(QtWidgets.QWidget):
         search_button.clicked.connect(self.a)
         self.show()
     def a(self):
+        self.close()
+        uic.loadUi('a.ui',  self)
+        self.show()
         driver = webdriver.Chrome()
-        driver.get("https://www.digikala.com/search/category-mobile-phone/product-list/?brands%5b0%5d=20")
+        driver.get("https://www.digikala.com/search/category-camera-bag/")
         products = []
         srcs = []
         sleep(6)
@@ -120,7 +123,7 @@ class A:
             self.price = price
             self.img = img
         def __repr__(self):
-            return self.name + self.price
+            return self.name + self.price + self.img
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     window = MenuPage()
