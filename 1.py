@@ -9,7 +9,7 @@ from selenium.webdriver.common.by import By
 from time import sleep
 import requests
 from bs4 import BeautifulSoup
-a = 1
+a = 0
 
 
 class MenuPage(QtWidgets.QWidget):
@@ -111,6 +111,9 @@ class MenuPage(QtWidgets.QWidget):
             response = requests.get(src)
             open(str(a) + '.png', 'wb').write(response.content)
             a = a + 1
+        for i in range(0 , 6) :
+            a1 = A(names[i] , prices[i] , str(i) + '.png')
+            products.append(a1)
 class A:
         def __init__(self , name , price , img):
             self.name = name
