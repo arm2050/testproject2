@@ -51,8 +51,11 @@ class ImageViewer(QWidget):
         else:
             self.image_label.setPixmap(
                 pixmap.scaled(200, 200, aspectRatioMode=1))
-
+products = []
+a = 1
 def a() :
+    global a
+    srcs = []
     driver = webdriver.Chrome()
     driver.get("https://basalam.com/s?q=%D9%85%D9%88%D8%A8%D8%A7%DB%8C%D9%84")
     # driver.execute_script("window.scrollBy(0,6000)", "")
@@ -61,9 +64,18 @@ def a() :
         name = driver.find_element(By.XPATH , value='/html/body/div[1]/div/div/main/div/div[2]/div[1]/div[2]/div/div[2]/section/div[' + str(i) + ']/div[2]/a')
         driver.implicitly_wait(5)
         price = driver.find_element(By.XPATH , '/html/body/div[1]/div/div/main/div/div[2]/div[1]/div[2]/div/div[2]/section/div[' + str(i) + ' ]/div[2]/div[3]/div[2]/span')
-        # image = driver.find_element(By.XPATH , value='/html/body/div[1]/div/div/main/div/div[2]/div[1]/div[2]/div/div[2]/section/div[' + str(i) + ']/div[1]/a/img')
-        # image_src = image.get_attribute("src")
-
+        image = driver.find_element(By.XPATH , value='/html/body/div[1]/div/div/main/div/div[2]/div[1]/div[2]/div/div[2]/section/div[' + str(i) + ']/div[1]/a/img')
+        image_src = image.get_attribute("src")
+        srcs.append(image_src)
+    for src in srcs:
+        global a
+        response = requests.get(src)
+        print(src)
+        open(str(a) + '.png', 'wb').write(response.content)
+        a = a + 1
+    # for i in range(1 , 6) :
+    #     a1 = Product(srcs[i - 1] , name , price)
+    #     products.append(a1)
 
 
 
@@ -72,19 +84,19 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
 
     # Create a list of products
-    products = [
-        Product("C:/Users/MR Razeghi/Desktop/final project ap/search branch/1.png",
-                "Product 1", "$9.99"),
-        Product("C:/Users/MR Razeghi/Desktop/final project ap/search branch/2.png",
-                "Product 2", "$19.99"),
-        Product("C:/Users/MR Razeghi/Desktop/final project ap/search branch/3.png",
-                "Product 3", "$14.99"),
-        Product("C:/Users/MR Razeghi/Desktop/final project ap/search branch/1.png",
-                "Product 1", "$9.99"),
-        Product("C:/Users/MR Razeghi/Desktop/final project ap/search branch/1.png",
-                "Product 1", "$9.99"),
-        # Add more products here...
-    ]
+    # products = [
+    #     Product("C:/Users/MR Razeghi/Desktop/final project ap/search branch/1.png",
+    #             "Product 1", "$9.99"),
+    #     Product("C:/Users/MR Razeghi/Desktop/final project ap/search branch/2.png",
+    #             "Product 2", "$19.99"),
+    #     Product("C:/Users/MR Razeghi/Desktop/final project ap/search branch/3.png",
+    #             "Product 3", "$14.99"),
+    #     Product("C:/Users/MR Razeghi/Desktop/final project ap/search branch/1.png",
+    #             "Product 1", "$9.99"),
+    #     Product("C:/Users/MR Razeghi/Desktop/final project ap/search branch/1.png",
+    #             "Product 1", "$9.99"),
+    #     # Add more products here...
+    # ]
 
     # Create a main window
     main_window = QMainWindow()
