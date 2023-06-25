@@ -75,21 +75,13 @@ class ImageViewer(QtWidgets.QMainWindow):
             by=By.CSS_SELECTOR, value="img.w-100.radius-medium.d-inline-block.lazyloaded")
         for i in range(0, 6):
             srcs.append(images[i].get_attribute("src"))
-            print(prices[i].text, names[i].text)
-            print(images[i].get_attribute("src"))
-            # pass
-            # driver.implicitly_wait(4)
-            # print(prices[i] , names[i] , images[i].get_attribute("src"))
-            # a = driver.find_element(By.XPATH,'/html/body/div[1]/div[1]/div[3]/div[3]/div[3]/section[1]/div[2]/div[' + str(i) + ']/a/div/article/div[2]/div[1]/div/div/div[1]/div/picture/img')
-            # src = a.get_attribute("src")
-            # srcs.append(src)
         for src in srcs:
             global a
             response = requests.get(src)
             open(str(a) + '.png', 'wb').write(response.content)
             a = a + 1
         for i in range(0, 6):
-            a1 = product(names[i], prices[i], str(i) + '.png')
+            a1 = product(str(i) + '.png' , names[i], prices[i])
             products.append(a1)
 
         for product in products:
