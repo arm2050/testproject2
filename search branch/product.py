@@ -55,9 +55,14 @@ class ImageViewer(QWidget):
 def a() :
     driver = webdriver.Chrome()
     driver.get("https://basalam.com/s?q=%D9%85%D9%88%D8%A8%D8%A7%DB%8C%D9%84")
-    for i in range(1 ,10) :
-        e1 = driver.find_element(By.XPATH , value='/html/body/div[1]/div/div/main/div/div[2]/div[1]/div[2]/div/div[2]/section/div[' + str(i) + ']/div[2]/a')
-        print(e1.text)
+    # driver.execute_script("window.scrollBy(0,6000)", "")
+    for i in range(1 , 6) :
+        driver.implicitly_wait(5)
+        name = driver.find_element(By.XPATH , value='/html/body/div[1]/div/div/main/div/div[2]/div[1]/div[2]/div/div[2]/section/div[' + str(i) + ']/div[2]/a')
+        driver.implicitly_wait(5)
+        price = driver.find_element(By.XPATH , '/html/body/div[1]/div/div/main/div/div[2]/div[1]/div[2]/div/div[2]/section/div[' + str(i) + ' ]/div[2]/div[3]/div[2]/span')
+        # image = driver.find_element(By.XPATH , value='/html/body/div[1]/div/div/main/div/div[2]/div[1]/div[2]/div/div[2]/section/div[' + str(i) + ']/div[1]/a/img')
+        # image_src = image.get_attribute("src")
 
 
 
