@@ -6,6 +6,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.utils import ChromeType
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
 import requests
 from bs4 import BeautifulSoup
@@ -23,7 +24,7 @@ class MenuPage(QtWidgets.QMainWindow):
         register_btn = QtWidgets.QPushButton('Register', self)
         login_btn = QtWidgets.QPushButton('Login', self)
         search_button = QtWidgets.QPushButton('search', self)
-        search_button.setGeometry(QtCore.QRect(400, 320 , 80 , 30))
+        search_button.setGeometry(QtCore.QRect(400, 60 , 80 , 30))
         register_btn.setGeometry(QtCore.QRect(20, 20, 80, 30))
         login_btn.setGeometry(QtCore.QRect(120, 20, 80, 30))
 
@@ -87,11 +88,19 @@ class MenuPage(QtWidgets.QMainWindow):
         search_button.clicked.connect(self.a)
         self.show()
     def a(self):
-        self.close()
-        uic.loadUi('a.ui',  self)
-        self.show()
+        # self.close()
+        # uic.loadUi('a.ui',  self)
+        # self.show()
         driver = webdriver.Chrome()
         driver.get("https://www.digikala.com/search/category-camera-bag/")
+        driver.implicitly_wait(7)
+        # actions = ActionChains(driver)
+        # e1 = driver.find_element(By.XPATH , '/html/body/div[1]/div[1]/div[3]/div[3]/div[1]/div[2]/section[1]/div[2]/div[13]/a/div/article/div[2]/div[1]/div/div/div[1]/div/picture/img')
+        # driver.execute_script("arguments[0].scrollIntoView(true)" , e1)
+        # driver.execute_script("scrollBy(0 , 900)")
+        # driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
+        # for i in range(1 , 40) :
+            # actions.send_keys(Keys.ARROW_DOWN)
         products = []
         srcs = []
         sleep(6)
