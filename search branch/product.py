@@ -20,7 +20,8 @@ class Product:
         self.image_path = image_path
         self.name = name
         self.price = price
-
+    def __repr__(self):
+        return self.image_path + self.name + self.price
 
 class ImageViewer(QWidget):
     def __init__(self, product):
@@ -52,46 +53,59 @@ class ImageViewer(QWidget):
             self.image_label.setPixmap(
                 pixmap.scaled(200, 200, aspectRatioMode=1))
 products = []
-a = 1
+s = 1
 def a() :
-    global a
+    global s
     srcs = []
     driver = webdriver.Chrome()
-    driver.get("https://basalam.com/s?q=%D9%85%D9%88%D8%A8%D8%A7%DB%8C%D9%84")
+    driver.get("https://basalam.com/search/subcategory/men-homewear")
     # driver.execute_script("window.scrollBy(0,6000)", "")
     for i in range(1 , 6) :
         driver.implicitly_wait(5)
-        name = driver.find_element(By.XPATH , value='/html/body/div[1]/div/div/main/div/div[2]/div[1]/div[2]/div/div[2]/section/div[' + str(i) + ']/div[2]/a')
+        name1 = driver.find_element(By.XPATH , value='/html/body/div[1]/div/div/main/div/div[2]/div[1]/div[2]/div/div[2]/section/div[' + str(i) + ']/div[2]/a')
         driver.implicitly_wait(5)
-        price = driver.find_element(By.XPATH , '/html/body/div[1]/div/div/main/div/div[2]/div[1]/div[2]/div/div[2]/section/div[' + str(i) + ' ]/div[2]/div[3]/div[2]/span')
+        price1 = driver.find_element(By.XPATH , '/html/body/div[1]/div/div/main/div/div[2]/div[1]/div[2]/div/div[2]/section/div[' + str(i) + ' ]/div[2]/div[3]/div[2]/span')
         image = driver.find_element(By.XPATH , value='/html/body/div[1]/div/div/main/div/div[2]/div[1]/div[2]/div/div[2]/section/div[' + str(i) + ']/div[1]/a/img')
         image_src = image.get_attribute("src")
         srcs.append(image_src)
+        product1 = Product(str(s) + '.png', name1.text, price1.text)
+        products.append(product1)
+        print(product1)
+        s = s + 1
+    s = 1
+    for src in srcs:
+        response = requests.get(src)
+        open(str(s) + '.png', 'wb').write(response.content)
+        s = s + 1
+
     threads = []
     def download(url):
-        global a
+        global s
         response = requests.get(url)
-        open(str(a) + '.png', 'wb').write(response.content)
-        a = a + 1
+        open(str(s) + '.png', 'wb').write(response.content)
+        s = s + 1
     for src in srcs:
-        global a
         t1 = threading.Thread(target=download , args=(src , ))
         threads.append(t1)
         t1.start()
         # response = requests.get(src)
         # print(src)
-        # open(str(a) + '.jpg', 'wb').write(response.content)
-        # sleep(16)
-        # a = a + 1
+        # open(str(s) + '.jpg', 'wb').write(response.content)
+        # s = s + 1
     for thread in threads:
         thread.join()
-    for i in range(1 , 6) :
-        a1 = Product(srcs[i - 1] , name , price)
-        products.append(a1)
-
-
-
-
+    # for i in range(1 , 6) :
+    #     a1 = Product(srcs[i - 1] , name , price)
+    #     products.append(a1)
+    row = 1
+    col = 0
+    for product in products:
+        viewer = ImageViewer(product)
+        layout.addWidget(viewer.group_box, row, col)
+        col += 1
+        if col == 5:  # Change the number of columns as needed
+            col = 0
+            row += 1
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
@@ -132,15 +146,8 @@ if __name__ == "__main__":
     layout.addWidget(search_btn, 0, 3, 1, 1)
     search_btn.clicked.connect(a)
     # Create ImageViewer objects for each product
-    row = 1  # Start from row 1 to leave space for the search bar
-    col = 0
-    for product in products:
-        viewer = ImageViewer(product)
-        layout.addWidget(viewer.group_box, row, col)
-        col += 1
-        if col == 5:  # Change the number of columns as needed
-            col = 0
-            row += 1
+
+
 
     # Show the main window
     main_window.show()
