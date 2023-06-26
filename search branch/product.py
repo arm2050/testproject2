@@ -60,6 +60,7 @@ def a() :
     srcs = []
     driver = webdriver.Chrome()
     driver.get("https://basalam.com/s?q=" + str(text1))
+    sleep(14)
     # driver.execute_script("window.scrollBy(0,6000)", "")
     for i in range(1 , 6) :
         driver.implicitly_wait(5)
@@ -79,22 +80,25 @@ def a() :
         open(str(s) + '.png', 'wb').write(response.content)
         s = s + 1
 
-    threads = []
-    def download(url):
-        global s
-        response = requests.get(url)
+    # threads = []
+    # def download(url):
+    #     global s
+    #     response = requests.get(url)
+    #     open(str(s) + '.png', 'wb').write(response.content)
+    s = 1
+    for src in srcs:
+        response = requests.get(src)
         open(str(s) + '.png', 'wb').write(response.content)
         s = s + 1
-    for src in srcs:
-        t1 = threading.Thread(target=download , args=(src , ))
-        threads.append(t1)
-        t1.start()
+        # t1 = threading.Thread(target=download , args=(src , ))
+        # threads.append(t1)
+        # t1.start()
         # response = requests.get(src)
         # print(src)
         # open(str(s) + '.jpg', 'wb').write(response.content)
         # s = s + 1
-    for thread in threads:
-        thread.join()
+    # for thread in threads:
+        # thread.join()
     # for i in range(1 , 6) :
     #     a1 = Product(srcs[i - 1] , name , price)
     #     products.append(a1)
@@ -107,6 +111,9 @@ def a() :
         if col == 5:  # Change the number of columns as needed
             col = 0
             row += 1
+    s = 1
+    for i in range(0 , len(products)) :
+        products.pop(0)
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
