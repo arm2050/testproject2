@@ -1,8 +1,10 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget, QGroupBox, QGridLayout, QLineEdit
+from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QPixmap, QFont
 from PyQt5 import QtWidgets
 from selenium import webdriver
+from PyQt5 import *
 import sys
 from PyQt5 import QtWidgets, QtGui, QtCore, uic
 from selenium import webdriver
@@ -15,6 +17,7 @@ from time import sleep
 import requests
 from bs4 import BeautifulSoup
 import threading
+from PyQt5.QtCore import *
 class Product:
     def __init__(self, image_path, name, price):
         self.image_path = image_path
@@ -60,7 +63,6 @@ def a() :
     srcs = []
     driver = webdriver.Chrome()
     driver.get("https://basalam.com/s?q=" + str(text1))
-    sleep(14)
     # driver.execute_script("window.scrollBy(0,6000)", "")
     for i in range(1 , 6) :
         driver.implicitly_wait(5)
@@ -117,21 +119,6 @@ def a() :
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
-    # Create a list of products
-    # products = [
-    #     Product("C:/Users/MR Razeghi/Desktop/final project ap/search branch/1.png",
-    #             "Product 1", "$9.99"),
-    #     Product("C:/Users/MR Razeghi/Desktop/final project ap/search branch/2.png",
-    #             "Product 2", "$19.99"),
-    #     Product("C:/Users/MR Razeghi/Desktop/final project ap/search branch/3.png",
-    #             "Product 3", "$14.99"),
-    #     Product("C:/Users/MR Razeghi/Desktop/final project ap/search branch/1.png",
-    #             "Product 1", "$9.99"),
-    #     Product("C:/Users/MR Razeghi/Desktop/final project ap/search branch/1.png",
-    #             "Product 1", "$9.99"),
-    #     # Add more products here...
-    # ]
-
     # Create a main window
     main_window = QMainWindow()
     main_window.setWindowTitle("Image Viewer")
@@ -149,11 +136,32 @@ if __name__ == "__main__":
     search_bar = QLineEdit()
     # Add the search bar at row 0, spanning 1 row and 5 columns
     layout.addWidget(search_bar, 0, 1, 1, 2)
+    layout2 = QGridLayout()
 
     search_btn = QtWidgets.QPushButton('search')
     layout.addWidget(search_btn, 0, 3, 1, 1)
     search_btn.clicked.connect(a)
-    # Create ImageViewer objects for each product
+    phone_menu = QtWidgets.QMenu()
+    phone_menu.addAction('اپل')
+    phone_menu.addAction('سامسونگ')
+    phone_btn = QtWidgets.QPushButton('موبایل')
+    layout.addWidget(phone_btn , 0 , 4 , 1 , 1)
+    phone_btn.setMenu(phone_menu)
+    clothes_btn = QtWidgets.QPushButton('لباس')
+    clothes_menu = QtWidgets.QMenu()
+    clothes_menu.addAction('کفش مردانه')
+    clothes_menu.addAction('شلوار مردانه')
+    clothes_menu.addAction('کفش زنانه')
+    clothes_menu.addAction('شلوار زنانه')
+    clothes_btn.setMenu(clothes_menu)
+    clothes_btn.setGeometry(10 , 10 , 20 , 10)
+    layout.addWidget(clothes_btn , 0 , 5 , 1 , 1)
+
+
+
+
+
+
 
 
 
