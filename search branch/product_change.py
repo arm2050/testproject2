@@ -103,11 +103,6 @@ def a() :
         response = requests.get(src)
         open(str(s) + '.png', 'wb').write(response.content)
         s = s + 1
-    s = 1
-    for src in srcs:
-        response = requests.get(src)
-        open(str(s) + '.png', 'wb').write(response.content)
-        s = s + 1
     row = 1
     col = 0
     for product in products:
@@ -117,7 +112,6 @@ def a() :
         if col == 3:  # Change the number of columns as needed
             col = 0
             row += 1
-    s = 1
     for i in range(0 , len(products)) :
         products.pop(0)
 if __name__ == "__main__":

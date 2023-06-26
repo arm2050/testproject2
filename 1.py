@@ -1,18 +1,12 @@
 import sys
-from PyQt5 import QtWidgets, QtGui, QtCore, uic
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromiumService
-from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.core.utils import ChromeType
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from time import sleep
-import requests
-from bs4 import BeautifulSoup
-a = 0
+from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt5.QtWidgets import QMessageBox
+import sqlite3
+
+user = {}
 
 
-class MenuPage(QtWidgets.QMainWindow):
+class MenuPage(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
 
@@ -22,10 +16,12 @@ class MenuPage(QtWidgets.QMainWindow):
         # Register and Login buttons
         register_btn = QtWidgets.QPushButton('Register', self)
         login_btn = QtWidgets.QPushButton('Login', self)
-        search_button = QtWidgets.QPushButton('search', self)
-        search_button.setGeometry(QtCore.QRect(400, 320, 80, 30))
+
         register_btn.setGeometry(QtCore.QRect(20, 20, 80, 30))
         login_btn.setGeometry(QtCore.QRect(120, 20, 80, 30))
+
+        register_btn.clicked.connect(self.show_register_page)
+        login_btn.clicked.connect(self.show_login_page)
 
         # Category buttons
         clothes_btn = QtWidgets.QPushButton('Clothes', self)
@@ -79,87 +75,105 @@ class MenuPage(QtWidgets.QMainWindow):
         # Search bar
         search_bar = QtWidgets.QLineEdit(self)
         search_bar.setPlaceholderText('Search')
-        search_bar.setGeometry(QtCore.QRect(250, 100, 300, 30))
+        search_bar.setGeometry(QtCore.QRect(250, 150, 300, 30))
 
         # Set window properties
         self.setGeometry(100, 100, 800, 400)
         self.setWindowTitle('Menu Page')
-        search_button.clicked.connect(self.a)
+
         self.show()
 
-    def a(self):
-        #        self.close()
-        #       uic.loadUi('a.ui',  self)
-        #        self.show()
-        driver = webdriver.Chrome()
-        driver.get("https://www.digikala.com/search/category-camera-bag/")
-        products = []
-        srcs = []
-        sleep(6)
-        prices = driver.find_elements(
-            by=By.CSS_SELECTOR, value='div.d-flex.ai-center.jc-end.gap-1.color-700.color-400.text-h5.grow-1')
-        names = driver.find_elements(
-            by=By.CSS_SELECTOR, value='h3.ellipsis-2.text-body2-strong.color-700.styles_VerticalProductCard__productTitle__6zjjN')
-        sleep(6)
-        images = driver.find_elements(
-            by=By.CSS_SELECTOR, value="img.w-100.radius-medium.d-inline-block.lazyloaded")
-        for i in range(0, 6):
-            srcs.append(images[i].get_attribute("src"))
-            print(prices[i].text, names[i].text)
-            print(images[i].get_attribute("src"))
-            # pass
-            # driver.implicitly_wait(4)
-            # print(prices[i] , names[i] , images[i].get_attribute("src"))
-            # a = driver.find_element(By.XPATH,'/html/body/div[1]/div[1]/div[3]/div[3]/div[3]/section[1]/div[2]/div[' + str(i) + ']/a/div/article/div[2]/div[1]/div/div/div[1]/div/picture/img')
-            # src = a.get_attribute("src")
-            # srcs.append(src)
-        for src in srcs:
-            global a
-            response = requests.get(src)
-            open(str(a) + '.png', 'wb').write(response.content)
-            a = a + 1
-        for i in range(0, 6):
-            a1 = product(names[i], prices[i], str(i) + '.png')
-            products.append(a1)
+    def show_register_page(self):
+        register_dialog = RegisterDialog(self)
+        register_dialog.exec_()
 
-        print(products)
+    def show_login_page(self):
+        login_dialog = LoginDialog(self)
+        login_dialog.exec_()
 
 
-class product:
-    def __init__(self, name, price, img):
-        self.name = name
-        self.price = price
-        self.img = img
+class RegisterDialog(QtWidgets.QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle('Register Page')
 
-    def __repr__(self):
-        return self.name + self.price + self.img
+        username_label = QtWidgets.QLabel('Username:')
+        password_label = QtWidgets.QLabel('Password:')
+        self.username_edit = QtWidgets.QLineEdit()
+        self.password_edit = QtWidgets.QLineEdit()
+        register_btn = QtWidgets.QPushButton('Register')
+        register_btn.clicked.connect(self.showusername)
+
+        layout = QtWidgets.QFormLayout()
+        layout.addRow(username_label, self.username_edit)
+        layout.addRow(password_label, self.password_edit)
+        layout.addRow(register_btn)
+
+        self.setLayout(layout)
+
+    def showusername(self):
+        username_text = self.username_edit.text()
+        password_text = self.password_edit.text()
+
+        connection = sqlite3.connect("users.db")
+        cursor = connection.cursor()
+
+        # Create the table if it doesn't exist
+        cursor.execute("CREATE TABLE IF NOT EXISTS users (username TEXT PRIMARY KEY, password TEXT)")
+
+        try:
+            # Insert the username and password into the table
+            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username_text, password_text))
+            connection.commit()
+            QMessageBox.information(self, "Registration", "Registration successful!")
+        except sqlite3.IntegrityError:
+            QMessageBox.warning(self, "Registration", "Username already exists!")
+
+        connection.close()
+
+
+class LoginDialog(QtWidgets.QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle('login Page')
+
+        username_label = QtWidgets.QLabel('Username:')
+        password_label = QtWidgets.QLabel('Password:')
+        self.username_edit = QtWidgets.QLineEdit()
+        self.password_edit = QtWidgets.QLineEdit()
+        register_btn = QtWidgets.QPushButton('Register')
+        register_btn.clicked.connect(self.showusername)
+
+        layout = QtWidgets.QFormLayout()
+        layout.addRow(username_label, self.username_edit)
+        layout.addRow(password_label, self.password_edit)
+        layout.addRow(register_btn)
+
+        self.setLayout(layout)
+
+    def showusername(self):
+        username_text = self.username_edit.text()
+        password_text = self.password_edit.text()
+
+        connection = sqlite3.connect("users.db")
+        cursor = connection.cursor()
+
+        cursor.execute("SELECT password FROM users WHERE username = ?", (username_text,))
+        result = cursor.fetchone()
+
+        if result is None:
+            message = "User doesn't exist."
+        elif result[0] == password_text:
+            message = "Welcome!"
+        else:
+            message = "Wrong password."
+
+        QMessageBox.information(self, "Login Result", message)
+
+        connection.close()
 
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     window = MenuPage()
     sys.exit(app.exec_())
-
-
-# /html/body/div[1]/div[1]/div[2]/div[4]/div[2]/div[3]/section/div[2]/div[1]/a/div/article/div[2]/div[2]/div[2]/h3
-# /html/body/div[1]/div[1]/div[2]/div[4]/div[2]/div[3]/section/div[2]/div[3]/a/div/article/div[2]/div[2]/div[2]/h3
-# /html/body/div[1]/div[1]/div[2]/div[4]/div[2]/div[3]/section/div[2]/div[4]/a/div/article/div[2]/div[2]/div[2]/h3
-
-
-# /html/body/div[1]/div[1]/div[2]/div[4]/div[2]/div[3]/section/div[2]/div[1]/a/div/article/div[2]/div[2]/div[4]/div[1]/div/span
-# /html/body/div[1]/div[1]/div[2]/div[4]/div[2]/div[3]/section/div[2]/div[2]/a/div/article/div[2]/div[2]/div[4]/div[1]/div/span
-
-
-# /html/body/div[1]/div[1]/div[2]/div[4]/div[2]/div[3]/section/div[2]/div[1]/a/div/article/div[2]/div[2]/div[2]/h3
-# /html/body/div[1]/div[1]/div[2]/div[4]/div[2]/div[3]/section/div[2]/div[2]/a/div/article/div[2]/div[2]/div[2]/h3
-
-
-# ProductListPagesWrapper > section > div.product-list_ProductList__pagesContainer__zAhrX.product-list_ProductList__pagesContainer--withoutSidebar__aty9j > div:nth-child(1) > a > div > article > div.d-flex.grow-1.pos-relative.flex-column > div.grow-1.d-flex.flex-column.ai-stretch.jc-start > div:nth-child(2) > h3
-
-# ProductListPagesWrapper > section > div.product-list_ProductList__pagesContainer__zAhrX.product-list_ProductList__pagesContainer--withoutSidebar__aty9j > div:nth-child(1) > a > div > article > div.d-flex.grow-1.pos-relative.flex-column > div.grow-1.d-flex.flex-column.ai-stretch.jc-start > div:nth-child(2) > h3
-
-# ProductListPagesWrapper > section > div.product-list_ProductList__pagesContainer__zAhrX.product-list_ProductList__pagesContainer--withoutSidebar__aty9j > div:nth-child(1) > a > div > article > div.d-flex.grow-1.pos-relative.flex-row > div.grow-1.d-flex.flex-column.ai-stretch.jc-start > div:nth-child(2) > h3
-# ProductListPagesWrapper > section > div.product-list_ProductList__pagesContainer__zAhrX.product-list_ProductList__pagesContainer--withoutSidebar__aty9j > div:nth-child(2) > a > div > article > div.d-flex.grow-1.pos-relative.flex-row > div.grow-1.d-flex.flex-column.ai-stretch.jc-start > div:nth-child(2) > h3
-
-
-# ProductListPagesWrapper > section > div.product-list_ProductList__pagesContainer__zAhrX.product-list_ProductList__pagesContainer--withoutSidebar__aty9j > div:nth-child(1) > a > div > article > div.d-flex.grow-1.pos-relative.flex-column > div.grow-1.d-flex.flex-column.ai-stretch.jc-start > div:nth-child(2) > h3
