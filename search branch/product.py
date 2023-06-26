@@ -135,9 +135,9 @@ if __name__ == "__main__":
     # Add a search bar
     search_bar = QLineEdit()
     # Add the search bar at row 0, spanning 1 row and 5 columns
-    layout.addWidget(search_bar, 0, 1, 1, 2)
+    layout.addWidget(search_bar, 0, 1, 1, 1)
     layout2 = QGridLayout()
-
+    layout.addLayout(layout2 , 0 , 0 , 1 , 1)
     search_btn = QtWidgets.QPushButton('search')
     layout.addWidget(search_btn, 0, 3, 1, 1)
     search_btn.clicked.connect(a)
@@ -145,8 +145,13 @@ if __name__ == "__main__":
     phone_menu.addAction('اپل')
     phone_menu.addAction('سامسونگ')
     phone_btn = QtWidgets.QPushButton('موبایل')
-    layout.addWidget(phone_btn , 0 , 4 , 1 , 1)
     phone_btn.setMenu(phone_menu)
+    layout.addWidget(phone_btn , 0 , 4 , 1 , 1)
+    food_menu = QtWidgets.QMenu()
+    food_menu.addAction('ماهی')
+    food_menu.addAction('برنج')
+    food_btn = QtWidgets.QPushButton('خوراکی')
+    food_btn.setMenu(food_menu)
     clothes_btn = QtWidgets.QPushButton('لباس')
     clothes_menu = QtWidgets.QMenu()
     clothes_menu.addAction('کفش مردانه')
@@ -154,8 +159,10 @@ if __name__ == "__main__":
     clothes_menu.addAction('کفش زنانه')
     clothes_menu.addAction('شلوار زنانه')
     clothes_btn.setMenu(clothes_menu)
-    clothes_btn.setGeometry(10 , 10 , 20 , 10)
-    layout.addWidget(clothes_btn , 0 , 5 , 1 , 1)
+    # clothes_btn.setGeometry(10 , 10 , 20 , 10)
+    layout2.addWidget(phone_btn, 0, 4, 1, 1)
+    layout2.addWidget(food_btn , 0 , 5 , 1 , 1)
+    layout2.addWidget(clothes_btn , 0 , 6 , 1 , 1)
 
 
 
