@@ -1,12 +1,12 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget, QGroupBox, QGridLayout, QLineEdit
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QPixmap, QFont,QDesktopServices
+from PyQt5.QtGui import QPixmap,QDesktopServices
 from PyQt5 import QtWidgets
 from selenium import webdriver
 from PyQt5 import *
 from lxml import etree
-from PyQt5 import QtWidgets, QtGui, QtCore, uic
+from PyQt5 import QtWidgets
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromiumService
 from webdriver_manager.chrome import ChromeDriverManager
@@ -16,7 +16,6 @@ from selenium.webdriver.common.by import By
 from time import sleep
 import requests
 from bs4 import BeautifulSoup
-import threading
 from PyQt5.QtCore import *
 class Product:
     def __init__(self, image_path, name, price,href):
@@ -64,12 +63,31 @@ class ImageViewer(QWidget):
         else:
             self.image_label.setPixmap(
                 pixmap.scaled(200, 200, aspectRatioMode=1))
-    def show_product_details(self, product):
-        # Implement the functionality to show the details of the product
-        print("Showing details for product:", product.name)
     
     def open_url(self,href):
         QDesktopServices.openUrl(QUrl(href))
+        
+    def show_product_details(self, product):
+        details_dialog = QDialog(self)
+        details_dialog.setWindowTitle("Product Details")
+        details_dialog.setMinimumWidth(300)
+        
+        driver = webdriver.Chrome('path/to/chromedriver')
+        driver.get(product.href)
+        section_content = ''
+        count = 1 
+        for i in range(5):
+            section = driver.find_element(By.XPATH, "/html/body/div[1]/div/div/main/div/section/div[1]/div[1]/div[2]/div[2]/div/ul/li[" + str(count) +"]")
+            print(section)
+            count += 1
+        driver.quit()
+
+        text_label = QLabel(details_dialog)
+        text_label.setText(section_content)
+
+        details_dialog.exec_()
+        
+
         
 products = []
 s = 1
