@@ -3,10 +3,20 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QMessageBox
 import sqlite3
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget, QGroupBox, QGridLayout, QLineEdit, QPushButton
+from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget, QGroupBox, QGridLayout, QLineEdit
+from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget, QGroupBox, QGridLayout, QLineEdit
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QPixmap, QFont,QDesktopServices
+from PyQt5 import QtWidgets
+from selenium import webdriver
+from PyQt5 import *
+from lxml import etree
+from PyQt5 import QtWidgets, QtGui, QtCore, uic
 
 
-user = {}
+
+
+
 
 
 class MenuPage(QtWidgets.QWidget):
@@ -31,25 +41,19 @@ class MenuPage(QtWidgets.QWidget):
         # Dropdown menus
 
         # Search bar
-        self.search_bar = QtWidgets.QLineEdit(self)
-        self.search_bar.setPlaceholderText('Search')
-        self.search_bar.setGeometry(QtCore.QRect(250, 150, 300, 30))
-        
-        self.search_btn = QPushButton('Search', self)
-        self.search_btn.setGeometry(QtCore.QRect(250, 200, 300, 30))
-        self.search_btn.clicked.connect(self.search_button_clicked)
+
 
         # Set window properties
         self.setGeometry(100, 100, 800, 400)
         self.setWindowTitle('Menu Page')
 
         self.show()
-        
+
     def search_button_clicked(self):
         search_text = self.search_bar.text()
         print(search_text)
-    # Call the search function or method using the search_text
 
+    # Call the search function or method using the search_text
 
     def show_register_page(self):
         register_dialog = RegisterDialog(self)
@@ -109,7 +113,7 @@ class LoginDialog(QtWidgets.QDialog):
         password_label = QtWidgets.QLabel('Password:')
         self.username_edit = QtWidgets.QLineEdit()
         self.password_edit = QtWidgets.QLineEdit()
-        register_btn = QtWidgets.QPushButton('Register')
+        register_btn = QtWidgets.QPushButton('Registerr')
         register_btn.clicked.connect(self.showusername)
 
         layout = QtWidgets.QFormLayout()
@@ -141,7 +145,23 @@ class LoginDialog(QtWidgets.QDialog):
         connection.close()
 
 
+
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     window = MenuPage()
     sys.exit(app.exec_())
+
+
+
+
+
+
+

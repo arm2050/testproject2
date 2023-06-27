@@ -1,6 +1,8 @@
 import sys
+from product3 import *
 from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget, QGroupBox, QGridLayout, QLineEdit
 from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtGui import QPixmap, QFont,QDesktopServices
 from PyQt5 import QtWidgets
 from selenium import webdriver
@@ -25,7 +27,7 @@ class Product:
         self.price = price
         self.href = href
     def __repr__(self):
-        return self.image_path + ' ' + self.name + ' ' +self.price + self.href
+        return self.image_path + ' ' + self.name + ' ' +self.price + ' ' + self.href
 
 class ImageViewer(QWidget):
 
@@ -226,6 +228,50 @@ def b(word) :
     for i in range(0, len(products)):
         products.pop(0)
     p = p + 1
+userss = []
+def g() :
+    global layout
+    global userss
+    g1 = QDialog()
+
+    username_label = QtWidgets.QLabel('Username:')
+    password_label = QtWidgets.QLabel('Password:')
+    username_edit = QtWidgets.QLineEdit()
+    password_edit = QtWidgets.QLineEdit()
+    register_btn = QtWidgets.QPushButton('Registerr')
+    def s() :
+        # print(username_edit.text() , password_edit.text())
+        global g1
+        global userss
+        if (username_edit.text(), password_edit.text()) in userss:
+            print(userss)
+            g1.QMessageBox.information("Registration", "Username already exists!")
+            # print(username_label.text())
+            # g1.setParent(None)
+        else:
+            print("--------------")
+
+        #
+            userss.append((username_edit.text() , password_edit.text()))
+            g1.QMessageBox.about("Registration", "Registration successful!")
+            # g1.setParent(None)
+    register_btn.clicked.connect(s)
+
+    layout3 = QtWidgets.QFormLayout()
+    layout3.addRow(username_label, username_edit)
+    layout3.addRow(password_label, password_edit)
+    layout3.addRow(register_btn)
+
+    g1.setLayout(layout3)
+
+    layout.addWidget(g1 , 1 ,0 , 1 , 1)
+    # g1.setParent(None)
+    # if [username_label.text() , password_label.text()] in userss :
+    #     QMessageBox.information("Registration", "Username already exists!")
+        # print(username_label.text())
+    # else:
+    #     userss.append([username_label.text() , password_label.text()] )
+    #     QMessageBox.information("Registration", "Registration successful!")
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
@@ -249,6 +295,8 @@ if __name__ == "__main__":
     layout2 = QGridLayout()
     layout.addLayout(layout2 , 0 , 0 , 1 , 1)
     search_btn = QtWidgets.QPushButton('search')
+    sign_up_btn = QtWidgets.QPushButton('sign_up')
+    login_btn = QtWidgets.QPushButton('login')
     layout.addWidget(search_btn, 0, 3, 1, 1)
     search_btn.clicked.connect(a)
     electronic_menu = QtWidgets.QMenu()
@@ -278,9 +326,12 @@ if __name__ == "__main__":
     p8 = clothes_menu.addAction('شلوار زنانه')
     clothes_btn.setMenu(clothes_menu)
 
-    layout2.addWidget(electronic_btn, 0, 4, 1, 1)
-    layout2.addWidget(food_btn , 0 , 5 , 1 , 1)
-    layout2.addWidget(clothes_btn , 0 , 6 , 1 , 1)
+    layout2.addWidget(electronic_btn, 0, 5, 1, 1)
+    layout2.addWidget(food_btn , 0 , 6 , 1 , 1)
+    layout2.addWidget(clothes_btn , 0 , 7 , 1 , 1)
+    layout2.addWidget(sign_up_btn , 0 , 3 , 1 , 1)
+    layout2.addWidget(login_btn, 0, 4, 1, 1)
+
 
 
     # l1 = [p1 , p2 , p3 , p4 , p5 , p6 , p7 , p8 , p9, p10 , p11]
@@ -297,6 +348,10 @@ if __name__ == "__main__":
     p11.triggered.connect(lambda: b(p11.text()))
     p12.triggered.connect(lambda: b(p12.text()))
     p13.triggered.connect(lambda: b(p13.text()))
+
+
+    sign_up_btn.clicked.connect(g)
+    login_btn.clicked.connect(g)
     # for i in l1 :
     #     print(i.text())
     #     i.triggered.connect(lambda : b(i.text()))
