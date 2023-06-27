@@ -2,6 +2,9 @@ import sys
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QMessageBox
 import sqlite3
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget, QGroupBox, QGridLayout, QLineEdit, QPushButton
+
 
 user = {}
 
@@ -14,74 +17,84 @@ class MenuPage(QtWidgets.QWidget):
 
     def init_ui(self):
         # Register and Login buttons
-        register_btn = QtWidgets.QPushButton('Register', self)
-        login_btn = QtWidgets.QPushButton('Login', self)
+        self.register_btn = QtWidgets.QPushButton('Register', self)
+        self.login_btn = QtWidgets.QPushButton('Login', self)
 
-        register_btn.setGeometry(QtCore.QRect(20, 20, 80, 30))
-        login_btn.setGeometry(QtCore.QRect(120, 20, 80, 30))
+        self.register_btn.setGeometry(QtCore.QRect(20, 20, 80, 30))
+        self.login_btn.setGeometry(QtCore.QRect(120, 20, 80, 30))
 
-        register_btn.clicked.connect(self.show_register_page)
-        login_btn.clicked.connect(self.show_login_page)
+        self.register_btn.clicked.connect(self.show_register_page)
+        self.login_btn.clicked.connect(self.show_login_page)
 
         # Category buttons
-        clothes_btn = QtWidgets.QPushButton('Clothes', self)
-        phone_btn = QtWidgets.QPushButton('Phone', self)
-        laptop_btn = QtWidgets.QPushButton('Laptop', self)
-        shoe_btn = QtWidgets.QPushButton('Shoe', self)
-        electronic_btn = QtWidgets.QPushButton('Electronic', self)
+        self.clothes_btn = QtWidgets.QPushButton('Clothes', self)
+        self.phone_btn = QtWidgets.QPushButton('Phone', self)
+        self.laptop_btn = QtWidgets.QPushButton('Laptop', self)
+        self.shoe_btn = QtWidgets.QPushButton('Shoe', self)
+        self.electronic_btn = QtWidgets.QPushButton('Electronic', self)
 
-        clothes_btn.setGeometry(QtCore.QRect(380, 20, 80, 30))
-        phone_btn.setGeometry(QtCore.QRect(460, 20, 80, 30))
-        laptop_btn.setGeometry(QtCore.QRect(540, 20, 80, 30))
-        shoe_btn.setGeometry(QtCore.QRect(620, 20, 80, 30))
-        electronic_btn.setGeometry(QtCore.QRect(700, 20, 80, 30))
+        self.clothes_btn.setGeometry(QtCore.QRect(380, 20, 80, 30))
+        self.phone_btn.setGeometry(QtCore.QRect(460, 20, 80, 30))
+        self.laptop_btn.setGeometry(QtCore.QRect(540, 20, 80, 30))
+        self.shoe_btn.setGeometry(QtCore.QRect(620, 20, 80, 30))
+        self.electronic_btn.setGeometry(QtCore.QRect(700, 20, 80, 30))
 
         # Dropdown menus
-        clothes_menu = QtWidgets.QMenu(self)
-        clothes_menu.addAction('Option 1')
-        clothes_menu.addAction('Option 2')
-        clothes_menu.addAction('Option 3')
-        clothes_menu.addAction('Option 4')
-        clothes_btn.setMenu(clothes_menu)
+        self.clothes_menu = QtWidgets.QMenu(self)
+        self.clothes_menu.addAction('Option 1')
+        self.clothes_menu.addAction('Option 2')
+        self.clothes_menu.addAction('Option 3')
+        self.clothes_menu.addAction('Option 4')
+        self.clothes_btn.setMenu(self.clothes_menu)
 
-        phone_menu = QtWidgets.QMenu(self)
-        phone_menu.addAction('Option 1')
-        phone_menu.addAction('Option 2')
-        phone_menu.addAction('Option 3')
-        phone_menu.addAction('Option 4')
-        phone_btn.setMenu(phone_menu)
+        self.phone_menu = QtWidgets.QMenu(self)
+        self.phone_menu.addAction('Option 1')
+        self.phone_menu.addAction('Option 2')
+        self.phone_menu.addAction('Option 3')
+        self.phone_menu.addAction('Option 4')
+        self.phone_btn.setMenu(self.phone_menu)
 
-        laptop_menu = QtWidgets.QMenu(self)
-        laptop_menu.addAction('Option 1')
-        laptop_menu.addAction('Option 2')
-        laptop_menu.addAction('Option 3')
-        laptop_menu.addAction('Option 4')
-        laptop_btn.setMenu(laptop_menu)
+        self.laptop_menu = QtWidgets.QMenu(self)
+        self.laptop_menu.addAction('Option 1')
+        self.laptop_menu.addAction('Option 2')
+        self.laptop_menu.addAction('Option 3')
+        self.laptop_menu.addAction('Option 4')
+        self.laptop_btn.setMenu(self.laptop_menu)
 
-        shoe_menu = QtWidgets.QMenu(self)
-        shoe_menu.addAction('Option 1')
-        shoe_menu.addAction('Option 2')
-        shoe_menu.addAction('Option 3')
-        shoe_menu.addAction('Option 4')
-        shoe_btn.setMenu(shoe_menu)
+        self.shoe_menu = QtWidgets.QMenu(self)
+        self.shoe_menu.addAction('Option 1')
+        self.shoe_menu.addAction('Option 2')
+        self.shoe_menu.addAction('Option 3')
+        self.shoe_menu.addAction('Option 4')
+        self.shoe_btn.setMenu(self.shoe_menu)
 
-        electronic_menu = QtWidgets.QMenu(self)
-        electronic_menu.addAction('Option 1')
-        electronic_menu.addAction('Option 2')
-        electronic_menu.addAction('Option 3')
-        electronic_menu.addAction('Option 4')
-        electronic_btn.setMenu(electronic_menu)
+        self.electronic_menu = QtWidgets.QMenu(self)
+        self.electronic_menu.addAction('Option 1')
+        self.electronic_menu.addAction('Option 2')
+        self.electronic_menu.addAction('Option 3')
+        self.electronic_menu.addAction('Option 4')
+        self.electronic_btn.setMenu(self.electronic_menu)
 
         # Search bar
-        search_bar = QtWidgets.QLineEdit(self)
-        search_bar.setPlaceholderText('Search')
-        search_bar.setGeometry(QtCore.QRect(250, 150, 300, 30))
+        self.search_bar = QtWidgets.QLineEdit(self)
+        self.search_bar.setPlaceholderText('Search')
+        self.search_bar.setGeometry(QtCore.QRect(250, 150, 300, 30))
+        
+        self.search_btn = QPushButton('Search', self)
+        self.search_btn.setGeometry(QtCore.QRect(250, 200, 300, 30))
+        self.search_btn.clicked.connect(self.search_button_clicked)
 
         # Set window properties
         self.setGeometry(100, 100, 800, 400)
         self.setWindowTitle('Menu Page')
 
         self.show()
+        
+    def search_button_clicked(self):
+        search_text = self.search_bar.text()
+        print(search_text)
+    # Call the search function or method using the search_text
+
 
     def show_register_page(self):
         register_dialog = RegisterDialog(self)
