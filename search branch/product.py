@@ -24,9 +24,10 @@ class Product:
         self.name = name
         self.price = price
     def __repr__(self):
-        return self.image_path + self.name + self.price
+        return self.image_path + ' ' + self.name + ' ' +self.price
 
 class ImageViewer(QWidget):
+
     def __init__(self, product):
         super().__init__()
 
@@ -47,7 +48,7 @@ class ImageViewer(QWidget):
         self.group_layout.addWidget(self.price_label)
 
         self.load_image(product.image_path)
-
+        ImageViewer.l = [self.name_label , self.price_label]
     def load_image(self, image_path):
         pixmap = QPixmap(image_path)
         if pixmap.isNull():
@@ -56,9 +57,17 @@ class ImageViewer(QWidget):
             self.image_label.setPixmap(
                 pixmap.scaled(200, 200, aspectRatioMode=1))
 products = []
+l1 = []
 s = 1
+p = 0
 def a() :
     global s
+    global p
+    global l1
+    global layout
+    if p > 0 :
+        for i in l1:
+            i.setParent(None)
     text1 = search_bar.text()
     srcs = []
     driver = webdriver.Chrome()
@@ -82,33 +91,18 @@ def a() :
         open(str(s) + '.png', 'wb').write(response.content)
         s = s + 1
 
-    # threads = []
-    # def download(url):
-    #     global s
-    #     response = requests.get(url)
-    #     open(str(s) + '.png', 'wb').write(response.content)
     s = 1
     for src in srcs:
         response = requests.get(src)
         open(str(s) + '.png', 'wb').write(response.content)
         s = s + 1
-        # t1 = threading.Thread(target=download , args=(src , ))
-        # threads.append(t1)
-        # t1.start()
-        # response = requests.get(src)
-        # print(src)
-        # open(str(s) + '.jpg', 'wb').write(response.content)
-        # s = s + 1
-    # for thread in threads:
-        # thread.join()
-    # for i in range(1 , 6) :
-    #     a1 = Product(srcs[i - 1] , name , price)
-    #     products.append(a1)
+
     row = 1
     col = 0
     for product in products:
         viewer = ImageViewer(product)
         layout.addWidget(viewer.group_box, row, col)
+        l1.append(viewer.group_box)
         col += 1
         if col == 5:  # Change the number of columns as needed
             col = 0
@@ -116,8 +110,10 @@ def a() :
     s = 1
     for i in range(0 , len(products)) :
         products.pop(0)
+    p = p + 1
 def b(word) :
     global s
+    global p
     srcs = []
     driver = webdriver.Chrome()
     driver.get("https://basalam.com/s?q=" + str(word))
@@ -162,6 +158,7 @@ def b(word) :
     s = 1
     for i in range(0, len(products)):
         products.pop(0)
+    p = p + 1
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
@@ -228,11 +225,11 @@ if __name__ == "__main__":
     p6.triggered.connect(lambda : b(p6.text()))
     p7.triggered.connect(lambda : b(p7.text()))
     p8.triggered.connect(lambda : b(p8.text()))
-    p9.triggered.connect(lambda: b(p8.text()))
-    p10.triggered.connect(lambda: b(p8.text()))
-    p11.triggered.connect(lambda: b(p8.text()))
-    p12.triggered.connect(lambda: b(p8.text()))
-    p13.triggered.connect(lambda: b(p8.text()))
+    p9.triggered.connect(lambda: b(p9.text()))
+    p10.triggered.connect(lambda: b(p10.text()))
+    p11.triggered.connect(lambda: b(p11.text()))
+    p12.triggered.connect(lambda: b(p12.text()))
+    p13.triggered.connect(lambda: b(p13.text()))
     # for i in l1 :
     #     print(i.text())
     #     i.triggered.connect(lambda : b(i.text()))
