@@ -17,6 +17,8 @@ from time import sleep
 import requests
 from bs4 import BeautifulSoup
 from PyQt5.QtCore import *
+
+
 class Product:
     def __init__(self, image_path, name, price,href):
         self.image_path = image_path
@@ -70,20 +72,24 @@ class ImageViewer(QWidget):
     def show_product_details(self, product):
         details_dialog = QDialog(self)
         details_dialog.setWindowTitle("Product Details")
-        details_dialog.setMinimumWidth(300)
-        
+
         driver = webdriver.Chrome('path/to/chromedriver')
-        driver.get(product.href)
-        section_content = ''
-        count = 1 
-        for i in range(5):
-            section = driver.find_element(By.XPATH, "/html/body/div[1]/div/div/main/div/section/div[1]/div[1]/div[2]/div[2]/div/ul/li[" + str(count) +"]")
-            print(section)
-            count += 1
+        url = product.href
+        driver.get(url)
+        driver.implicitly_wait(5)
+        # Find the element using XPath
+        xpath = '//li[contains(@class, "product-attributes__item")]'
+        elements = driver.find_elements(By.XPATH, xpath)
+        # Extract the text from the element
+        texts = [element.text.strip() for element in elements]
+        # Close the browser window and quit the driver
         driver.quit()
 
-        text_label = QLabel(details_dialog)
-        text_label.setText(section_content)
+        text_edit = QPlainTextEdit(details_dialog)
+        text_edit.setPlainText('\n'.join(texts))  # Convert list to a single string
+        text_edit.setReadOnly(True)  # Make the text read-only
+
+        details_dialog.adjustSize()  # Adjust dialog size to fit the contents
 
         details_dialog.exec_()
         
@@ -142,7 +148,7 @@ def b(word = None) :
         viewer = ImageViewer(product)
         layout.addWidget(viewer.group_box, row, col)
         col += 1
-        if col == 5:  # Change the number of columns as needed
+        if col == 3:  # Change the number of columns as needed
             col = 0
             row += 1
     for i in range(0, len(products)):
