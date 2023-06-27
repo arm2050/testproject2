@@ -114,6 +114,11 @@ def a() :
 def b(word) :
     global s
     global p
+    global l1
+    global layout
+    if p > 0:
+        for i in l1:
+            i.setParent(None)
     srcs = []
     driver = webdriver.Chrome()
     driver.get("https://basalam.com/s?q=" + str(word))
@@ -151,6 +156,7 @@ def b(word) :
     for product in products:
         viewer = ImageViewer(product)
         layout.addWidget(viewer.group_box, row, col)
+        l1.append(viewer.group_box)
         col += 1
         if col == 5:  # Change the number of columns as needed
             col = 0
