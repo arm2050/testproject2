@@ -3,6 +3,7 @@ from product3 import *
 from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget, QGroupBox, QGridLayout, QLineEdit
 from PyQt5.QtWidgets import *
 from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QPixmap, QFont,QDesktopServices
 from PyQt5 import QtWidgets
 from selenium import webdriver
@@ -241,20 +242,24 @@ def g() :
     register_btn = QtWidgets.QPushButton('Registerr')
     def s() :
         # print(username_edit.text() , password_edit.text())
-        global g1
         global userss
         if (username_edit.text(), password_edit.text()) in userss:
             print(userss)
-            g1.QMessageBox.information("Registration", "Username already exists!")
-            # print(username_label.text())
-            # g1.setParent(None)
+            msg = QMessageBox()
+            # msg.setIcon(QMessageBox.Information)
+            msg.setText("Username already exists!")
+            msg.exec_()
+
         else:
             print("--------------")
+            msg = QMessageBox()
 
-        #
+            msg.setText("Registration successful!")
+            msg.exec_()
             userss.append((username_edit.text() , password_edit.text()))
-            g1.QMessageBox.about("Registration", "Registration successful!")
-            # g1.setParent(None)
+        g1.setParent(None)
+        layout3.setParent(None)
+        return None
     register_btn.clicked.connect(s)
 
     layout3 = QtWidgets.QFormLayout()
