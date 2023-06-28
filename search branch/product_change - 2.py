@@ -241,12 +241,11 @@ def g() :
     password_edit = QtWidgets.QLineEdit()
     register_btn = QtWidgets.QPushButton('Registerr')
     def s() :
-        # print(username_edit.text() , password_edit.text())
+
         global userss
         if (username_edit.text(), password_edit.text()) in userss:
             print(userss)
             msg = QMessageBox()
-            # msg.setIcon(QMessageBox.Information)
             msg.setText("Username already exists!")
             msg.exec_()
 
@@ -270,13 +269,44 @@ def g() :
     g1.setLayout(layout3)
 
     layout.addWidget(g1 , 1 ,0 , 1 , 1)
-    # g1.setParent(None)
-    # if [username_label.text() , password_label.text()] in userss :
-    #     QMessageBox.information("Registration", "Username already exists!")
-        # print(username_label.text())
-    # else:
-    #     userss.append([username_label.text() , password_label.text()] )
-    #     QMessageBox.information("Registration", "Registration successful!")
+def h() :
+    global layout
+    global userss
+    g1 = QDialog()
+
+    username_label = QtWidgets.QLabel('Username:')
+    password_label = QtWidgets.QLabel('Password:')
+    username_edit = QtWidgets.QLineEdit()
+    password_edit = QtWidgets.QLineEdit()
+    register_btn = QtWidgets.QPushButton('Registerr')
+    def s() :
+        global userss
+        if (username_edit.text(), password_edit.text()) in userss:
+            print(userss)
+            msg = QMessageBox()
+
+            msg.setText("logining successful")
+            msg.exec_()
+
+        else:
+            msg = QMessageBox()
+
+            msg.setText("username and password does not exists!")
+            msg.exec_()
+            userss.append((username_edit.text() , password_edit.text()))
+        g1.setParent(None)
+        layout3.setParent(None)
+        return None
+    register_btn.clicked.connect(s)
+
+    layout3 = QtWidgets.QFormLayout()
+    layout3.addRow(username_label, username_edit)
+    layout3.addRow(password_label, password_edit)
+    layout3.addRow(register_btn)
+
+    g1.setLayout(layout3)
+
+    layout.addWidget(g1 , 1 ,0 , 1 , 1)
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
@@ -356,7 +386,7 @@ if __name__ == "__main__":
 
 
     sign_up_btn.clicked.connect(g)
-    login_btn.clicked.connect(g)
+    login_btn.clicked.connect(h)
     # for i in l1 :
     #     print(i.text())
     #     i.triggered.connect(lambda : b(i.text()))
