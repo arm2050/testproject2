@@ -25,10 +25,11 @@ class Product:
         self.src = src
     def __repr__(self):
         return self.image_path + ' ' + self.name + ' ' +self.price + ' ' + self.href
-
+products2 = []
 class ImageViewer(QWidget):
 
     def __init__(self, product,user = None):
+        global main_user
         super().__init__()
 
         user = main_user
@@ -72,8 +73,11 @@ class ImageViewer(QWidget):
     def open_url(self,href):
             QDesktopServices.openUrl(QUrl(href))
             
-    def add_to_favorites(self, product, user):
-        user.favorites.append(product)
+    global main_user
+    def add_to_favorites(self, product, main_user):
+        print(main_user)
+        main_user.favorites.append(product)
+        # products2.append(product)
         QMessageBox.information(self, "Success", "Product added to favorites!")
         
     def show_product_details(self, product):
@@ -105,29 +109,48 @@ class User:
         self.name = name
         self.password = password
         self.favorites = []
-        
-
+    def __repr__(self):
+        return self.name + self.password
+ss = 6
+pp = 6
+l1 = []
 def show_favorite():
-    global p
-    user = main_user
-    s = 1
-    srcs = []
-    for product in user.favorites:
-        srcs.append(product.src)
-    for src in srcs:
+    print("5")
+    global main_user
+    global pp
+    ss = 6
+    srcs2 = []
+    for i in l1 :
+        i.setParent(None)
+    for product in main_user.favorites:
+        srcs2.append(product.src)
+    for src in srcs2:
         response = requests.get(src)
-        open(str(s) + '.png', 'wb').write(response.content)
-        s = s + 1
+        open(str(ss) + '.png', 'wb').write(response.content)
+        ss = ss + 1
 
-    s = 1
-    for i in range(len(products)):
-        products.pop(0)
-    p = p + 1
-        
-    
+    ss = 6
+    # for i in range(len(products)):
+    #     products.pop(0)
+
+    # for i in user.fa
+
+    row = 1
+    col = 0
+    for product in main_user.favorites :
+        viewer = ImageViewer(product)
+        layout.addWidget(viewer.group_box, row, col)
+        l1.append(viewer.group_box)
+        col += 1
+        if col == 5:  # Change the number of columns as needed
+            col = 0
+            row += 1
+
+
+
     
 products = []
-l1 = []
+
 s = 1
 p = 0
 def a() :
@@ -271,7 +294,6 @@ def g() :
     password_edit = QtWidgets.QLineEdit()
     register_btn = QtWidgets.QPushButton('Register')
     def s() :
-
         global userss
         if (username_edit.text(), password_edit.text()) in userss:
             print(userss)
@@ -311,18 +333,17 @@ def h() :
     register_btn = QtWidgets.QPushButton('login')
     def s() :
         global userss
+        global main_user
         for user in userss:
             if user.name == username_edit.text():
                 if user.password == password_edit.text():
                     msg = QMessageBox()
-                    global main_user
                     main_user = user
                     msg.setText("Logging successful")
                     msg.exec_()
                     break  # Exit 
                 else:
                     msg = QMessageBox()
-
                     msg.setText("wrong password!")
                     msg.exec_()
         else:
