@@ -71,8 +71,7 @@ class ImageViewer(QWidget):
             self.image_label.setPixmap(
                 pixmap.scaled(200, 200, aspectRatioMode=1))
     def open_url(self,href):
-            QDesktopServices.openUrl(QUrl(href))
-            
+        QDesktopServices.openUrl(QUrl(href))
     global main_user
     def add_to_favorites(self, product, main_user):
         print(main_user)
@@ -99,9 +98,7 @@ class ImageViewer(QWidget):
         text_edit = QPlainTextEdit(details_dialog)
         text_edit.setPlainText('\n'.join(texts))  # Convert list to a single string
         text_edit.setReadOnly(True)  # Make the text read-only
-
         details_dialog.adjustSize()  # Adjust dialog size to fit the contents
-
         details_dialog.exec_()
 
 class User:
@@ -205,6 +202,7 @@ def a() :
     url = "https://timcheh.com/search?q=" + str(text1)
     driver = webdriver.Chrome()
     driver.get(url)
+    driver.execute_script("window.scrollBy(0,200)", "")
     l1 = []
     sleep(7)
     for i in range(0 , len(srcs)) :
@@ -226,6 +224,35 @@ def a() :
         response = requests.get(src)
         open(str(s + 5) + '.png', 'wb').write(response.content)
         s = s + 1
+    s = 1
+    for i in range(0 , len(srcs)):
+        srcs.pop(0)
+    driver.get('https://fafait.net/')
+    driver.implicitly_wait(14)
+    driver.find_element(By.ID, 'search-product-input').click()
+    driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div/header/form/input').send_keys(text1)
+    driver.implicitly_wait(14)
+    driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div/div/div/div[3]/button').click()
+    for i in range(1, 6):
+        driver.implicitly_wait(14)
+        name = driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div/div/div/div[2]/div[' + str(
+            i) + ']/a/div[2]/div/h2').text
+        driver.implicitly_wait(14)
+        price = driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div/div/div/div[2]/div[' + str(
+            i) + ']/a/div[2]/div/div[3]/div/div/div/div/div/span[1]').text
+        driver.implicitly_wait(14)
+        img_address = driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div/div/div/div[2]/div[' + str(
+            i) + ']/a/div[1]/img').get_attribute('src')
+        srcs.append(img_address)
+        product1 = Product(str(i + 10) + '.png' , name, price, None, img_address)
+    s = 1
+    for src in srcs:
+        response = requests.get(src)
+        open(str(s + 10) + '.png', 'wb').write(response.content)
+        s = s + 1
+    s = 1
+
+
 
     row = 1
     col = 0
@@ -297,6 +324,7 @@ def b(word) :
     url = "https://timcheh.com/search?q=" + str(word)
     driver = webdriver.Chrome()
     driver.get(url)
+    driver.execute_script("window.scrollBy(0,300)", "")
     l1 = []
     sleep(7)
     for i in range(0, len(srcs)):
@@ -318,7 +346,6 @@ def b(word) :
         response = requests.get(src)
         open(str(s + 5) + '.png', 'wb').write(response.content)
         s = s + 1
-
     row = 1
     col = 0
     for product in products:
@@ -503,14 +530,6 @@ if __name__ == "__main__":
     # for i in l1 :
     #     print(i.text())
     #     i.triggered.connect(lambda : b(i.text()))
-
-
-
-
-
-
-
-
 
     # Show the main window
     main_window.show()
