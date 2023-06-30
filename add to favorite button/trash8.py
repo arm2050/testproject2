@@ -201,6 +201,31 @@ def a() :
         response = requests.get(src)
         open(str(s) + '.png', 'wb').write(response.content)
         s = s + 1
+    s = 1
+    url = "https://timcheh.com/search?q=" + str(text1)
+    driver = webdriver.Chrome()
+    driver.get(url)
+    l1 = []
+    sleep(7)
+    for i in range(0 , len(srcs)) :
+        srcs.pop(0)
+    for i in range(1, 6):
+        driver.implicitly_wait(10)
+        name = driver.find_element(By.XPATH,
+                                   '/html/body/div[1]/div[4]/div/div[2]/div[2]/ul/li[' + str(i) + ']/a/div[2]/h3').text
+        driver.implicitly_wait(10)
+        price = driver.find_element(By.XPATH, '/html/body/div[1]/div[4]/div/div[2]/div[2]/ul/li[' + str(
+            i) + ']/a/div[2]/div[4]/div[1]').text
+        driver.implicitly_wait(10)
+        image_address = driver.find_element(By.XPATH, '/html/body/div[1]/div[4]/div/div[2]/div[2]/ul/li[' + str(
+            i) + ']/a/div[1]/div[1]/img').get_attribute("src")
+        srcs.append(image_address)
+        product1 = Product(str(i + 5) + '.png' , name , price, None , image_address)
+        products.append(product1)
+    for src in srcs :
+        response = requests.get(src)
+        open(str(s + 5) + '.png', 'wb').write(response.content)
+        s = s + 1
 
     row = 1
     col = 0
@@ -268,6 +293,32 @@ def b(word) :
         response = requests.get(src)
         open(str(s) + '.png', 'wb').write(response.content)
         s = s + 1
+    s = 1
+    url = "https://timcheh.com/search?q=" + str(word)
+    driver = webdriver.Chrome()
+    driver.get(url)
+    l1 = []
+    sleep(7)
+    for i in range(0, len(srcs)):
+        srcs.pop(0)
+    for i in range(1, 6):
+        driver.implicitly_wait(10)
+        name = driver.find_element(By.XPATH,
+                                   '/html/body/div[1]/div[4]/div/div[2]/div[2]/ul/li[' + str(i) + ']/a/div[2]/h3').text
+        driver.implicitly_wait(10)
+        price = driver.find_element(By.XPATH, '/html/body/div[1]/div[4]/div/div[2]/div[2]/ul/li[' + str(
+            i) + ']/a/div[2]/div[4]/div[1]').text
+        driver.implicitly_wait(10)
+        image_address = driver.find_element(By.XPATH, '/html/body/div[1]/div[4]/div/div[2]/div[2]/ul/li[' + str(
+            i) + ']/a/div[1]/div[1]/img').get_attribute("src")
+        srcs.append(image_address)
+        product1 = Product(str(i + 5) + '.png', name, price, None, image_address)
+        products.append(product1)
+    for src in srcs:
+        response = requests.get(src)
+        open(str(s + 5) + '.png', 'wb').write(response.content)
+        s = s + 1
+
     row = 1
     col = 0
     for product in products:
