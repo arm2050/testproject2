@@ -245,6 +245,7 @@ def a() :
             i) + ']/a/div[1]/img').get_attribute('src')
         srcs.append(img_address)
         product1 = Product(str(i + 10) + '.png' , name, price, None, img_address)
+        products.append(product1)
     s = 1
     for src in srcs:
         response = requests.get(src)
