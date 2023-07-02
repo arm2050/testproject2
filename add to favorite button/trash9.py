@@ -126,6 +126,8 @@ class ImageViewer(QWidget):
             text_edit = QPlainTextEdit(details_dialog)
             text_edit.setPlainText('\n'.join(texts))  # Convert list to a single string
             text_edit.setReadOnly(True)  # Make the text read-only
+            details_dialog.adjustSize()  # Adjust dialog size to fit the contents
+            details_dialog.exec_()
 
             details_dialog.adjustSize()  # Adjust dialog size to fit the contents
 
@@ -142,7 +144,7 @@ class ImageViewer(QWidget):
 
 
             elements = driver.find_elements(
-                By.XPATH, '//*[@id="product-layout"]/div[2]/div/div[2]/div/div[3]/ul/li')
+                By.XPATH, '/html/body/div[1]/div/div/div[1]/div/div[2]/div/div[7]/div/div[2]/div[1]')
             texts = []
             
             for element in elements:
@@ -151,6 +153,8 @@ class ImageViewer(QWidget):
             text_edit = QPlainTextEdit(details_dialog)
             text_edit.setPlainText('\n'.join(texts))  # Convert list to a single string
             text_edit.setReadOnly(True)  # Make the text read-only
+            details_dialog.adjustSize()  # Adjust dialog size to fit the contents
+            details_dialog.exec_()
             
 
 class User:
@@ -410,6 +414,7 @@ def b(word) :
     sleep(7)
     for i in range(0, len(srcs)):
         srcs.pop(0)
+    
     for i in range(1, 6):
         driver.implicitly_wait(10)
         
@@ -440,8 +445,6 @@ def b(word) :
         s = s + 1
     driver.close()
     s = 1
-    for i in range(0, len(products)):
-        products.pop(0)
     
     driver = webdriver.Chrome()
     driver.get('https://fafait.net/')
