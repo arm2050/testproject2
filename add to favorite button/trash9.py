@@ -12,17 +12,19 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.utils import ChromeType
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException
 from time import sleep
 import requests
 
 from PyQt5.QtCore import *
 class Product:
-    def __init__(self, image_path, name, price,href,src):
+    def __init__(self, image_path, name, price,href,src,site):
         self.image_path = image_path
         self.name = name
         self.price = price
         self.href = href
         self.src = src
+        self.site = site
     def __repr__(self):
         return self.image_path + ' ' + self.name + ' ' +self.price + ' ' + self.href
 products2 = []
@@ -80,26 +82,76 @@ class ImageViewer(QWidget):
         QMessageBox.information(self, "Success", "Product added to favorites!")
         
     def show_product_details(self, product):
-        details_dialog = QDialog(self)
-        details_dialog.setWindowTitle("Product Details")
+        if product.site == "basalam":
+            details_dialog = QDialog(self)
+            details_dialog.setWindowTitle("Product Details")
 
-        driver = webdriver.Chrome('path/to/chromedriver')
-        url = product.href
-        driver.get(url)
-        driver.implicitly_wait(5)
-        # Find the element using XPath
-        xpath = '//li[contains(@class, "product-attributes__item")]'
-        elements = driver.find_elements(By.XPATH, xpath)
-        # Extract the text from the element
-        texts = [element.text.strip() for element in elements]
-        # Close the browser window and quit the driver
-        driver.quit()
+            driver = webdriver.Chrome('path/to/chromedriver')
+            url = product.href
+            driver.get(url)
+            driver.implicitly_wait(5)
+            # Find the element using XPath
+            xpath = '//li[contains(@class, "product-attributes__item")]'
+            elements = driver.find_elements(By.XPATH, xpath)
+            # Extract the text from the element
+            texts = [element.text.strip() for element in elements]
+            # Close the browser window and quit the driver
+            driver.quit()
 
-        text_edit = QPlainTextEdit(details_dialog)
-        text_edit.setPlainText('\n'.join(texts))  # Convert list to a single string
-        text_edit.setReadOnly(True)  # Make the text read-only
-        details_dialog.adjustSize()  # Adjust dialog size to fit the contents
-        details_dialog.exec_()
+            text_edit = QPlainTextEdit(details_dialog)
+            text_edit.setPlainText('\n'.join(texts))  # Convert list to a single string
+            text_edit.setReadOnly(True)  # Make the text read-only
+            details_dialog.adjustSize()  # Adjust dialog size to fit the contents
+            details_dialog.exec_()
+        elif product.site == "timcheh":
+            details_dialog = QDialog(self)
+            details_dialog.setWindowTitle("Product Details")
+
+            driver = webdriver.Chrome('path/to/chromedriver')
+            url = product.href
+            driver.get(url)
+            button = driver.find_element(By.XPATH, "/html/body/div[1]/main/article/div/div[2]/div/ul/li[2]/a/i")
+
+            # Click the button
+            button.click()
+            texts = []
+            elements = driver.find_elements(
+            By.XPATH, '//*[@id="product_tab_holder"]/section/div/div/div/ul/li')
+            texts = []
+        # Print the text content of each element (you can perform any desired action with the elements)
+            for element in elements:
+                texts.append(element.text)
+            driver.quit()
+
+            text_edit = QPlainTextEdit(details_dialog)
+            text_edit.setPlainText('\n'.join(texts))  # Convert list to a single string
+            text_edit.setReadOnly(True)  # Make the text read-only
+
+            details_dialog.adjustSize()  # Adjust dialog size to fit the contents
+
+            details_dialog.exec_()
+        elif product.site == "fafa":
+            details_dialog = QDialog(self)
+            details_dialog.setWindowTitle("Product Details")
+            
+            driver = webdriver.Chrome('path/to/chromedriver')
+
+            url = product.href
+            # Open the webpage
+            driver.get(url)
+
+
+            elements = driver.find_elements(
+                By.XPATH, '//*[@id="product-layout"]/div[2]/div/div[2]/div/div[3]/ul/li')
+            texts = []
+            
+            for element in elements:
+                texts.append(element.text)
+            
+            text_edit = QPlainTextEdit(details_dialog)
+            text_edit.setPlainText('\n'.join(texts))  # Convert list to a single string
+            text_edit.setReadOnly(True)  # Make the text read-only
+            
 
 class User:
     def __init__(self, name,password):
@@ -112,7 +164,6 @@ ss = 6
 pp = 6
 l1 = []
 def show_favorite():
-<<<<<<< Updated upstream
     print("5")
     global main_user
     global pp
@@ -123,19 +174,6 @@ def show_favorite():
     for product in main_user.favorites:
         srcs2.append(product.src)
     for src in srcs2:
-=======
-    global s
-    global p
-    global l1
-    global layout
-    
-    srcs = []
-    for product in main_user.favorites:
-        srcs.append(product.src)
-     
-    s = 1
-    for src in srcs:
->>>>>>> Stashed changes
         response = requests.get(src)
         open(str(ss) + '.png', 'wb').write(response.content)
         ss = ss + 1
@@ -159,31 +197,6 @@ def show_favorite():
 
 
 
-<<<<<<< Updated upstream
-=======
-    s = 1
-    for src in srcs:
-        response = requests.get(src)
-        open(str(s) + '.png', 'wb').write(response.content)
-        s = s + 1
-
-    row = 1
-    col = 0
-    for product in main_user.favorites:
-        viewer = ImageViewer(product)
-        layout.addWidget(viewer.group_box, row, col)
-        l1.append(viewer.group_box)
-        col += 1
-        if col == 3:  # Change the number of columns as needed
-            col = 0
-            row += 1
-    s = 1
-    for i in range(0 , len(products)) :
-        products.pop(0)
-    p = p + 1
-        
-    
->>>>>>> Stashed changes
     
 products = []
 
@@ -218,11 +231,15 @@ def a() :
             href = "https://basalam.com" + href
         print(href)
         driver.implicitly_wait(5)
-        price1 = driver.find_element(By.XPATH , '/html/body/div[1]/div/div/main/div/div[2]/div[1]/div[2]/div/div[2]/section/div[' + str(i) + ' ]/div[2]/div[3]/div[2]/span')
+        try:
+             price1 = driver.find_element(By.XPATH , '/html/body/div[1]/div/div/main/div/div[2]/div[1]/div[2]/div/div[2]/section/div[' + str(i) + ' ]/div[2]/div[3]/div[2]/span')
+        except NoSuchElementException:
+            price = "unknown"
+        
         image = driver.find_element(By.XPATH , value='/html/body/div[1]/div/div/main/div/div[2]/div[1]/div[2]/div/div[2]/section/div[' + str(i) + ']/div[1]/a/img')
         image_src = image.get_attribute("src")
         srcs.append(image_src)
-        product1 = Product(str(s) + '.png', name1.text, price1.text,href,image_src)
+        product1 = Product(str(s) + '.png', name1.text, price1.text,href,image_src,"basalam")
         products.append(product1)
         print(product1)
         s = s + 1
@@ -251,13 +268,22 @@ def a() :
         name = driver.find_element(By.XPATH,
                                    '/html/body/div[1]/div[4]/div/div[2]/div[2]/ul/li[' + str(i) + ']/a/div[2]/h3').text
         driver.implicitly_wait(10)
-        price = driver.find_element(By.XPATH, '/html/body/div[1]/div[4]/div/div[2]/div[2]/ul/li[' + str(
-            i) + ']/a/div[2]/div[4]/div[1]').text
+        try:
+            price = driver.find_element(By.XPATH, '/html/body/div[1]/div[4]/div/div[2]/div[2]/ul/li[' + str(
+                i) + ']/a/div[2]/div[4]/div[1]').text
+        except NoSuchElementException:
+            price = "unknown"
+        
+        xpath = "/html/body/div[1]/div[4]/div/div[2]/div[2]/ul/li["+str(i) +"]/a"
+        element = driver.find_element(By.XPATH, xpath)
+        # Extract the href attribute from the element
+        href = element.get_attribute("href")
+        
         driver.implicitly_wait(10)
         image_address = driver.find_element(By.XPATH, '/html/body/div[1]/div[4]/div/div[2]/div[2]/ul/li[' + str(
             i) + ']/a/div[1]/div[1]/img').get_attribute("src")
         srcs.append(image_address)
-        product1 = Product(str(i + 5) + '.png' , name , price, None , image_address)
+        product1 = Product(str(i + 5) + '.png' , name , price, href, image_address,"timcheh")
         products.append(product1)
     for src in srcs :
         response = requests.get(src)
@@ -276,14 +302,25 @@ def a() :
         driver.implicitly_wait(14)
         name = driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div/div/div/div[2]/div[' + str(
             i) + ']/a/div[2]/div/h2').text
+        
+        xpath = "/html/body/div[2]/div[1]/div/div/div/div/div[2]/div["+str(i)+"]/a"
+        element = driver.find_element(By.XPATH, xpath)
+        # Extract the href attribute from the element
+        href = element.get_attribute("href")
+        
         driver.implicitly_wait(14)
-        price = driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div/div/div/div[2]/div[' + str(
-            i) + ']/a/div[2]/div/div[3]/div/div/div/div/div/span[1]').text
+        
+        try:
+            price = driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div/div/div/div[2]/div[' + str(
+                i) + ']/a/div[2]/div/div[3]/div/div/div/div/div/span[1]').text
+        except NoSuchElementException:
+            price = "unknown"
+        
         driver.implicitly_wait(14)
         img_address = driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div/div/div/div[2]/div[' + str(
             i) + ']/a/div[1]/img').get_attribute('src')
         srcs.append(img_address)
-        product1 = Product(str(i + 10) + '.png' , name, price, None, img_address)
+        product1 = Product(str(i + 10) + '.png' , name, price, href, img_address,"fafa")
         products.append(product1)
     s = 1
     for src in srcs:
@@ -338,18 +375,22 @@ def b(word) :
             href = "https://basalam.com" + href
         print(href)
         driver.implicitly_wait(5)
-        price1 = driver.find_element(By.XPATH,
-                                     '/html/body/div[1]/div/div/main/div/div[2]/div[1]/div[2]/div/div[2]/section/div[' + str(
-                                         i) + ' ]/div[2]/div[3]/div[2]/span')
+        try:
+            price1 = driver.find_element(By.XPATH,
+                                        '/html/body/div[1]/div/div/main/div/div[2]/div[1]/div[2]/div/div[2]/section/div[' + str(
+                                            i) + ' ]/div[2]/div[3]/div[2]/span')
+        except NoSuchElementException:
+            price = "unknown"
         image = driver.find_element(By.XPATH,
                                     value='/html/body/div[1]/div/div/main/div/div[2]/div[1]/div[2]/div/div[2]/section/div[' + str(
                                         i) + ']/div[1]/a/img')
         image_src = image.get_attribute("src")
         srcs.append(image_src)
-        product1 = Product(str(s) + '.png', name1.text, price1.text,href,image_src)
+        product1 = Product(str(s) + '.png', name1.text, price1.text,href,image_src,"basalam")
         products.append(product1)
         print(product1)
         s = s + 1
+    driver.close()
     s = 1
     for src in srcs:
         response = requests.get(src)
@@ -371,21 +412,76 @@ def b(word) :
         srcs.pop(0)
     for i in range(1, 6):
         driver.implicitly_wait(10)
+        
         name = driver.find_element(By.XPATH,
                                    '/html/body/div[1]/div[4]/div/div[2]/div[2]/ul/li[' + str(i) + ']/a/div[2]/h3').text
+        
+        xpath = "/html/body/div[1]/div[4]/div/div[2]/div[2]/ul/li["+str(i) +"]/a"
+        element = driver.find_element(By.XPATH, xpath)
+        # Extract the href attribute from the element
+        href = element.get_attribute("href")
+        
         driver.implicitly_wait(10)
-        price = driver.find_element(By.XPATH, '/html/body/div[1]/div[4]/div/div[2]/div[2]/ul/li[' + str(
-            i) + ']/a/div[2]/div[4]/div[1]').text
+        try:
+            price = driver.find_element(By.XPATH, '/html/body/div[1]/div[4]/div/div[2]/div[2]/ul/li[' + str(
+                i) + ']/a/div[2]/div[4]/div[1]').text
+        except NoSuchElementException:
+            price = "unknown"
         driver.implicitly_wait(10)
+        
         image_address = driver.find_element(By.XPATH, '/html/body/div[1]/div[4]/div/div[2]/div[2]/ul/li[' + str(
             i) + ']/a/div[1]/div[1]/img').get_attribute("src")
         srcs.append(image_address)
-        product1 = Product(str(i + 5) + '.png', name, price, None, image_address)
+        product1 = Product(str(i + 5) + '.png', name, price, href, image_address,"timcheh")
         products.append(product1)
     for src in srcs:
         response = requests.get(src)
         open(str(s + 5) + '.png', 'wb').write(response.content)
         s = s + 1
+    driver.close()
+    s = 1
+    for i in range(0, len(products)):
+        products.pop(0)
+    
+    driver = webdriver.Chrome()
+    driver.get('https://fafait.net/')
+    driver.implicitly_wait(10)
+    driver.find_element(By.ID, 'search-product-input').click()
+    driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div/header/form/input').send_keys(word)
+    driver.implicitly_wait(14)
+    driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div/div/div/div[3]/button').click()
+    for i in range(1, 6):
+        driver.implicitly_wait(14)
+        name = driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div/div/div/div[2]/div[' + str(
+            i) + ']/a/div[2]/div/h2').text
+        
+        xpath = "/html/body/div[2]/div[1]/div/div/div/div/div[2]/div["+str(i)+"]/a"
+        element = driver.find_element(By.XPATH, xpath)
+        # Extract the href attribute from the element
+        href = element.get_attribute("href")
+         
+        driver.implicitly_wait(14)
+        try:
+            price = driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div/div/div/div[2]/div[' + str(
+                i) + ']/a/div[2]/div/div[3]/div/div/div/div/div/span[1]').text
+        except NoSuchElementException:
+            price = "unknown"
+        
+        
+        driver.implicitly_wait(14)
+        img_address = driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div/div/div/div[2]/div[' + str(
+            i) + ']/a/div[1]/img').get_attribute('src')
+        srcs.append(img_address)
+        product1 = Product(str(i + 10) + '.png' , name, price, href, img_address,"fafa")
+        products.append(product1)
+    driver.close()
+    s = 1
+    for src in srcs:
+        response = requests.get(src)
+        open(str(s + 10) + '.png', 'wb').write(response.content)
+        s = s + 1
+    s = 1
+    
     row = 1
     col = 0
     for product in products:
@@ -397,7 +493,7 @@ def b(word) :
             col = 0
             row += 1
     s = 1
-    for i in range(0, len(products)):
+    for i in range(0 , len(products)) :
         products.pop(0)
     p = p + 1
 userss = []
@@ -523,20 +619,19 @@ if __name__ == "__main__":
     electronic_btn.setMenu(electronic_menu)
     layout.addWidget(electronic_btn , 0 , 4 , 1 , 1)
     food_menu = QtWidgets.QMenu()
-    p3 = food_menu.addAction('ماهی')
-    p4 = food_menu.addAction('برنج')
-    p9 = food_menu.addAction('نان')
-    p10 = food_menu.addAction('شیرینی')
-    p11 = food_menu.addAction('فندق')
-    food_btn = QtWidgets.QPushButton('خوراکی')
+    p3 = food_menu.addAction('لپتاپ')
+    p4 = food_menu.addAction('هدفون')
+    p9 = food_menu.addAction('دوربین')
+    p10 = food_menu.addAction('هارد')
+    food_btn = QtWidgets.QPushButton('لپتاپ و وسایل مربوطه')
     food_btn.setMenu(food_menu)
-    clothes_btn = QtWidgets.QPushButton('لباس')
+    clothes_btn = QtWidgets.QPushButton('گوشی و وسایل مربوطه')
     clothes_menu = QtWidgets.QMenu()
-    p5 = clothes_menu.addAction('کفش مردانه' )
+    p5 = clothes_menu.addAction('اسپیکر' )
 
-    p6 = clothes_menu.addAction('شلوار مردانه')
-    p7 = clothes_menu.addAction('کفش زنانه')
-    p8 = clothes_menu.addAction('شلوار زنانه')
+    p6 = clothes_menu.addAction('لوازم جانبی گوشی')
+    p7 = clothes_menu.addAction('ساعت هوشمند')
+    p8 = clothes_menu.addAction('گوشی')
     clothes_btn.setMenu(clothes_menu)
 
     layout2.addWidget(electronic_btn, 0, 5, 1, 1)
@@ -559,7 +654,6 @@ if __name__ == "__main__":
     p8.triggered.connect(lambda : b(p8.text()))
     p9.triggered.connect(lambda: b(p9.text()))
     p10.triggered.connect(lambda: b(p10.text()))
-    p11.triggered.connect(lambda: b(p11.text()))
     p12.triggered.connect(lambda: b(p12.text()))
     p13.triggered.connect(lambda: b(p13.text()))
 
