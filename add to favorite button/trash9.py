@@ -28,13 +28,13 @@ class Product:
     def __repr__(self):
         return self.image_path + ' ' + self.name + ' ' +self.price + ' ' + self.href
 products2 = []
+main_user = None
 class ImageViewer(QWidget):
 
-    def __init__(self, product,user = None):
+    def __init__(self, product):
         global main_user
         super().__init__()
 
-        user = main_user
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
 
@@ -56,7 +56,7 @@ class ImageViewer(QWidget):
         self.group_layout.addWidget(self.button)
         
         self.add_favorite_button = QPushButton("Add to Favorites")
-        self.add_favorite_button.clicked.connect(lambda: self.add_to_favorites(product, user))
+        self.add_favorite_button.clicked.connect(lambda: self.add_to_favorites(product, main_user))
         self.group_layout.addWidget(self.add_favorite_button)
 
         self.show_details_button = QPushButton("Show Details")
@@ -171,7 +171,7 @@ ss = 6
 pp = 6
 l1 = []
 def show_favorite():
-    print("5")
+
     global main_user
     global pp
     ss = 6
@@ -341,7 +341,7 @@ def a() :
     row = 1
     col = 0
     for product in products:
-        viewer = ImageViewer(product)
+        viewer = ImageViewer(product , main_user)
         layout.addWidget(viewer.group_box, row, col)
         l1.append(viewer.group_box)
         col += 1
@@ -541,7 +541,6 @@ def g() :
     layout.addWidget(g1 , 1 ,0 , 1 , 1)
 def h() :
     global layout
-    global userss
     g1 = QDialog()
 
     username_label = QtWidgets.QLabel('Username:')
@@ -550,7 +549,7 @@ def h() :
     password_edit = QtWidgets.QLineEdit()
     register_btn = QtWidgets.QPushButton('login')
     def s() :
-        global userss
+
         global main_user
         for user in userss:
             if user.name == username_edit.text():
@@ -558,6 +557,7 @@ def h() :
                     msg = QMessageBox()
                     main_user = user
                     msg.setText("Logging successful")
+
                     msg.exec_()
                     break  # Exit 
                 else:
