@@ -633,14 +633,13 @@ if __name__ == "__main__":
     search_btn.clicked.connect(a)
     electronic_menu = QtWidgets.QMenu()
 
-    p1 = electronic_menu.addAction('یخچال')
-    p2 = electronic_menu.addAction('ماشین ظرفشویی')
-    p12 = electronic_menu.addAction('ماشین لباسشویی')
-    p13 = electronic_menu.addAction('پنکه')
+    # p1 = electronic_menu.addAction('یخچال')
+    # p2 = electronic_menu.addAction('ماشین ظرفشویی')
+    # p12 = electronic_menu.addAction('ماشین لباسشویی')
+    # p13 = electronic_menu.addAction('پنکه')
 
-    electronic_btn = QtWidgets.QPushButton('لوازم برقی')
-    electronic_btn.setMenu(electronic_menu)
-    layout.addWidget(electronic_btn , 0 , 4 , 1 , 1)
+
+    # layout.addWidget(electronic_btn , 0 , 4 , 1 , 1)
     food_menu = QtWidgets.QMenu()
     p3 = food_menu.addAction('لپتاپ')
     p4 = food_menu.addAction('هدفون')
@@ -657,7 +656,7 @@ if __name__ == "__main__":
     p8 = clothes_menu.addAction('گوشی')
     clothes_btn.setMenu(clothes_menu)
 
-    layout2.addWidget(electronic_btn, 0, 5, 1, 1)
+    # layout2.addWidget(electronic_btn, 0, 5, 1, 1)
     layout2.addWidget(food_btn , 0 , 6 , 1 , 1)
     layout2.addWidget(clothes_btn , 0 , 7 , 1 , 1)
     layout2.addWidget(favorite_menu_btn , 0 , 2 , 1 , 1)
@@ -667,8 +666,8 @@ if __name__ == "__main__":
 
 
     # l1 = [p1 , p2 , p3 , p4 , p5 , p6 , p7 , p8 , p9, p10 , p11]
-    p1.triggered.connect(lambda : b(p1.text()))
-    p2.triggered.connect(lambda : b(p2.text()))
+    # p1.triggered.connect(lambda : b(p1.text()))
+    # p2.triggered.connect(lambda : b(p2.text()))
     p3.triggered.connect(lambda : b(p3.text()))
     p4.triggered.connect(lambda : b(p4.text()))
     p5.triggered.connect(lambda : b(p5.text()))
@@ -677,8 +676,8 @@ if __name__ == "__main__":
     p8.triggered.connect(lambda : b(p8.text()))
     p9.triggered.connect(lambda: b(p9.text()))
     p10.triggered.connect(lambda: b(p10.text()))
-    p12.triggered.connect(lambda: b(p12.text()))
-    p13.triggered.connect(lambda: b(p13.text()))
+    # p12.triggered.connect(lambda: b(p12.text()))
+    # p13.triggered.connect(lambda: b(p13.text()))
 
 
     sign_up_btn.clicked.connect(g)
