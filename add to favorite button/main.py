@@ -17,6 +17,7 @@ from time import sleep
 import requests
 
 from PyQt5.QtCore import *
+global main_user 
 class Product:
     def __init__(self, image_path, name, price,href,src,site):
         self.image_path = image_path
@@ -31,10 +32,8 @@ products2 = []
 class ImageViewer(QWidget):
 
     def __init__(self, product,user = None):
-        global main_user
         super().__init__()
 
-        user = main_user
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
 
@@ -56,7 +55,7 @@ class ImageViewer(QWidget):
         self.group_layout.addWidget(self.button)
         
         self.add_favorite_button = QPushButton("Add to Favorites")
-        self.add_favorite_button.clicked.connect(lambda: self.add_to_favorites(product, user))
+        self.add_favorite_button.clicked.connect(lambda: self.add_to_favorites(product))
         self.group_layout.addWidget(self.add_favorite_button)
 
         self.show_details_button = QPushButton("Show Details")
@@ -74,8 +73,9 @@ class ImageViewer(QWidget):
                 pixmap.scaled(200, 200, aspectRatioMode=1))
     def open_url(self,href):
         QDesktopServices.openUrl(QUrl(href))
-    global main_user
-    def add_to_favorites(self, product, main_user):
+
+    def add_to_favorites(self, product):   
+        global main_user
         if main_user is None:
             QMessageBox.information(self, "failed", "You are not logged in!")
         else:
@@ -633,9 +633,9 @@ if __name__ == "__main__":
     search_btn.clicked.connect(a)
     electronic_menu = QtWidgets.QMenu()
 
-    p1 = electronic_menu.addAction('یخچال و فریزر')
-    p2 = electronic_menu.addAction('ماشین لباسشویی')
-    p12 = electronic_menu.addAction('بخاری و گرمایشی')
+    p1 = electronic_menu.addAction('یخچال')
+    p2 = electronic_menu.addAction('ماشین ظرفشویی')
+    p12 = electronic_menu.addAction('ماشین لباسشویی')
     p13 = electronic_menu.addAction('پنکه')
 
     electronic_btn = QtWidgets.QPushButton('لوازم برقی')
