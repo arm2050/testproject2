@@ -1,5 +1,4 @@
 import sys
-from support import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtWidgets import *
@@ -63,7 +62,6 @@ class ImageViewer(QWidget):
         self.group_layout.addWidget(self.show_details_button)
 
         self.load_image(product.image_path)
-        ImageViewer.l = [self.name_label , self.price_label]
     def load_image(self, image_path):
         pixmap = QPixmap(image_path)
         if pixmap.isNull():
@@ -314,6 +312,8 @@ def a() :
         s = s + 1
     driver.close()
     s = 1
+    for i in range(0, len(srcs)):
+        srcs.pop(0)
     
     driver = webdriver.Chrome()
     driver.get('https://fafait.net/')
@@ -368,7 +368,7 @@ def a() :
     for i in range(0 , len(products)) :
         products.pop(0)
     p = p + 1
-    
+
 def b(word) :
     global s
     global p
@@ -465,6 +465,8 @@ def b(word) :
         s = s + 1
     driver.close()
     s = 1
+    for i in range(0, len(srcs)):
+        srcs.pop(0)
     
     driver = webdriver.Chrome()
     driver.get('https://fafait.net/')
